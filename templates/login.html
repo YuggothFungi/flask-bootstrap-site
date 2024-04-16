@@ -1,11 +1,39 @@
 {% extends "layout.html" %}
 
-{% block body %} 
+{% block body %}
 
-    <form action="/course" method="POST">
-        <input autocomplete="off" autofocus name="login" placeholder="Enter your login">
-        <input autocomplete="off" autofocus name="passw" placeholder="Enter your password">
-        <button type="submit">login</button>
-    </form>
+<!-- Pills content -->
+<div class="container md">
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
+                <form action="/course" method="POST">
+                    <div class="text-center mb-3">
+                        <p>Войдите в систему:</p>
+                    </div>
 
-{% endblock %}
+                    <!-- Email input -->
+                    <div data-mdb-input-init class="form-outline mb-4">
+                        <input type="email" id="loginName" class="form-control" />
+                        <label class="form-label" for="loginName">Введите своё имя</label>
+                    </div>
+
+                    <!-- Password input -->
+                    <div data-mdb-input-init class="form-outline mb-4">
+                        <input type="password" id="loginPassword" class="form-control" />
+                        <label class="form-label" for="loginPassword">Введите пароль</label>
+                    </div>
+
+                    <!-- Submit button -->
+                    <button type="submit" data-mdb-button-init data-mdb-ripple-init
+                        class="btn btn-primary btn-block mb-4">Войдите
+                    </button>
+                </form>
+            </div>
+            <div class="col-md-4"></div>
+        </div>
+    </div>
+
+
+    {% endblock %}

@@ -15,11 +15,11 @@ def login():
 
 @app.route("/course", methods=["POST"])
 def course():
-    if not request.form.get("login"):
+    if not request.form.get("loginName"):
         return render_template('error.html', message="Вы не ввели логин")
     else:
-        name = request.form.get("login")
-        return render_template('course.html',name=name)
+        name = request.form.get("loginName")
+        return render_template('course.html', name=name)
     
 @app.route("/register", methods=["GET", "POST"])
 def register():
