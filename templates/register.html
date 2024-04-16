@@ -7,19 +7,19 @@
         <div class="col-md-4"></div>
         <div class="col-md-4">
             <div class="tab-pane fade show active" id="pills-register" role="tabpanel" aria-labelledby="tab-register">
-                <form>
+                <form action="/register" method="POST">
                     <div class="text-center mb-3">
                         <p>Добавьте или измените данные пользователя в системе:</p>
                     </div>
 
                     <!-- Username input -->
                     <div data-mdb-input-init class="form-outline mb-4">
-                        <input type="text" id="registerUsername" class="form-control" />
+                        <input type="text" id="registerUsername" class="form-control" name="registerUsername"/>
                         <label class="form-label" for="registerUsername">Введите имя пользователя</label>
                     </div>
 
-                    <select class="form-control select-input" aria-label="Выберите роль пользователя">
-                        <option selected>Выберите роль пользователя</option>
+                    <select class="form-control select-input" aria-label="Выберите роль пользователя" name="registerUsertype">
+                        <option disabled selected value="">Выберите роль пользователя</option>
                         {% for usertype in usertypes %}
                         <option value="{{ usertype }}">{{ usertype }}</option>
                         {% endfor %}
@@ -28,7 +28,7 @@
 
                     <!-- Password input -->
                     <div data-mdb-input-init class="form-outline mb-4">
-                        <input type="password" id="registerPassword" class="form-control" />
+                        <input type="password" id="registerPassword" class="form-control" name="registerPassword"/>
                         <label class="form-label" for="registerPassword">Введите пароль</label>
                     </div>
 

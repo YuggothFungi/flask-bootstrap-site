@@ -7,20 +7,20 @@
         <div class="col-md-4"></div>
         <div class="col-md-4">
             <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">
-                <form action="/course" method="POST">
+                <form action="/login" method="POST">
                     <div class="text-center mb-3">
                         <p>Войдите в систему:</p>
                     </div>
 
                     <!-- Email input -->
                     <div data-mdb-input-init class="form-outline mb-4">
-                        <input type="email" id="loginName" class="form-control" />
+                        <input type="text" id="loginName" class="form-control" name="loginName"/>
                         <label class="form-label" for="loginName">Введите своё имя</label>
                     </div>
 
                     <!-- Password input -->
                     <div data-mdb-input-init class="form-outline mb-4">
-                        <input type="password" id="loginPassword" class="form-control" />
+                        <input type="password" id="loginPassword" class="form-control" name="loginPassword"/>
                         <label class="form-label" for="loginPassword">Введите пароль</label>
                     </div>
 
@@ -30,9 +30,9 @@
                     </button>
                 </form>
             </div>
-        <div class="col-md-4"></div>
+            <div class="col-md-4"></div>
+        </div>
     </div>
-</div>
 
 
     {% endblock %}

@@ -1,10 +1,7 @@
 {% extends "layout.html" %}
 
-{% block body %} 
+{% block body %}
 
-    <form action="/login" method="GET">
-        <input autocomplete="off" autofocus name="name" placeholder="Name">
-        <button type="submit">login</button>
-    </form>
+Hello, {% if name %}{{ name }}{% else %}world{% endif %}
 
 {% endblock %}
