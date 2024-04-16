@@ -27,9 +27,13 @@ def register():
         if request.form.get("usertype") not in USERTYPES:
             return render_template("error.html", message="Некорректная роль пользователя")
         return redirect("/users")
-    return render_template("register.html")
+    return render_template("register.html", usertypes=USERTYPES)
 
 @app.route("/users")
 def users():
     users = getUserList()
     return render_template("users.html", users=users )
+
+@app.route("/test")
+def test():
+    return render_template("test.html")

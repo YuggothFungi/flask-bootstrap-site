@@ -1,17 +1,51 @@
 {% extends "layout.html" %}
 
-{% block body %} 
+{% block body %}
 
-    <form action="/register" method="POST">
-        <input autocomplete="off" autofocus name="login" placeholder="Логин пользователя">
-        <input autocomplete="off" autofocus name="passw" placeholder="Пароль пользователя">
-        <select name="usertype">
-            <option disabled selected value="">Выберите роль</option>
-            {% for usertype in usertypes %}
-                <option value="{{ usertype }}">{{ usertype }}</option>
-            {% endfor %}
-        </select>
-        <button type="submit">Добавить пользователя</button>
-    </form>
+<div class="container md">
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <div class="tab-pane fade show active" id="pills-register" role="tabpanel" aria-labelledby="tab-register">
+                <form>
+                    <div class="text-center mb-3">
+                        <p>Добавьте или измените данные пользователя в системе:</p>
+                    </div>
+
+                    <!-- Username input -->
+                    <div data-mdb-input-init class="form-outline mb-4">
+                        <input type="text" id="registerUsername" class="form-control" />
+                        <label class="form-label" for="registerUsername">Введите имя пользователя</label>
+                    </div>
+
+                    <select class="form-control select-input" aria-label="Выберите роль пользователя">
+                        <option selected>Выберите роль пользователя</option>
+                        {% for usertype in usertypes %}
+                        <option value="{{ usertype }}">{{ usertype }}</option>
+                        {% endfor %}
+                    </select>
+                    <br>
+
+                    <!-- Password input -->
+                    <div data-mdb-input-init class="form-outline mb-4">
+                        <input type="password" id="registerPassword" class="form-control" />
+                        <label class="form-label" for="registerPassword">Введите пароль</label>
+                    </div>
+
+                    <!-- Repeat Password input -->
+                    <div data-mdb-input-init class="form-outline mb-4">
+                        <input type="password" id="registerRepeatPassword" class="form-control" />
+                        <label class="form-label" for="registerRepeatPassword">Введите пароль повторно</label>
+                    </div>
+
+                    <!-- Submit button -->
+                    <button type="submit" data-mdb-button-init data-mdb-ripple-init
+                        class="btn btn-primary btn-block mb-3">Зарегистрировать пользователя</button>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+</div>
 
 {% endblock %}
