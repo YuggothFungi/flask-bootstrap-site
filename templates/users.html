@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block body %} 
+
+    <h1>Список пользователей</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Логин</th>
+                <th>Роль</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user }}</td>
+                    <td>{{ users[user] }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
