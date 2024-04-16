@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block body %} 
+
+    <form action="/register" method="POST">
+        <input autocomplete="off" autofocus name="login" placeholder="Логин пользователя">
+        <input autocomplete="off" autofocus name="passw" placeholder="Пароль пользователя">
+        <select name="usertype">
+            <option disabled selected value="">Выберите роль</option>
+            {% for usertype in usertypes %}
+                <option value="{{ usertype }}">{{ usertype }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Добавить пользователя</button>
+    </form>
+
+{% endblock %}
