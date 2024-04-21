@@ -20,13 +20,33 @@ def login():
         if not request.form.get("loginName"):
             return render_template('error.html', message="Вы не ввели логин")
         session["name"] = request.form.get("loginName")
-        return redirect("/")
+        return redirect("/course1")
     return render_template('login.html')
 
-@app.route("/auth", methods=["POST"])
-def course():
+@app.route("/course1")
+def course1():
     name = session.get("name")
-    return render_template('course.html', name=name)
+    return render_template('course1.html', name=name)
+
+@app.route("/course2")
+def course2():
+    name = session.get("name")
+    return render_template('course2.html', name=name)
+
+@app.route("/course3")
+def course3():
+    name = session.get("name")
+    return render_template('course3.html', name=name)
+
+@app.route("/course4")
+def course4():
+    name = session.get("name")
+    return render_template('course4.html', name=name)
+
+@app.route("/course5")
+def course5():
+    name = session.get("name")
+    return render_template('course5.html', name=name)
     
 @app.route("/register", methods=["GET", "POST"])
 def register():

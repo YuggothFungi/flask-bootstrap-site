@@ -3,7 +3,7 @@
 
 <head>
     <meta name="viewport" content="initial-scale=1, width=device-width">
-    <title>Изучение языка программирование Python</title>
+    <title>Изучение языка программирования Python</title>
     <link rel="stylesheet" href="/static/css/bootstrap.min.css">
     <script src="/static/js/jquery-3.7.1.min.js"></script>
     <!-- Использован Bootstrap 4.6, потому что в пятом некоторые функции не заработали -->
@@ -11,7 +11,60 @@
 </head>
 
 <body>
-    {% block body %}{% endblock %}
+    <div class="container-md">
+        <div class="head text-center bg-light">
+            Изучение языка программирования Python
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <nav id="sidebarMenu" class="d-md-block bg-light sidebar collapse">
+                    <div class="sidebar-sticky pt-3">
+                      <ul class="nav flex-column">
+                        <li class="nav-item">
+                          <a class="nav-link" href="/">
+                            Начало
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="/course1">
+                            Курс 1
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="/course2">
+                            Курс 2
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="/course3">
+                            Курс 3
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="/course4">
+                            Курс 4
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                          <a class="nav-link" href="/course5">
+                            Курс 5
+                          </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login">
+                              Мои данные
+                            </a>
+                          </li>
+                      </ul>
+                    </div>
+                </nav>
+            </div>
+            <div class="col-md-8">
+                {% block body %}{% endblock %}
+            </div>
+        </div>
+    </div>
+
 </body>
 
 </html>
