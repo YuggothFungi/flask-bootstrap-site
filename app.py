@@ -7,9 +7,9 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
-USERTYPES = { "1": "Учащийся"
-            , "2" : "Учитель"
-            , "0" : "Администратор"
+USERTYPES = { 1: "Учащийся"
+            , 2 : "Учитель"
+            , 0 : "Администратор"
             }
 
 @app.route("/")
@@ -23,10 +23,13 @@ def login():
             if not request.form.get("loginName"):
                 return render_template('error.html', message="Вы не ввели логин")
             session['logged_in']=True
-            name = session['name'] = request.form.get("loginName")
-            if checkUserRole(name) == 0:
+            session_name = session['name'] = request.form.get("loginName")
+            session_role = checkUserRole(session_name)
+            if session_role == 1:
                 return redirect("/course1")
             else:
+                session['role'] = USERTYPES[session_role]
+                session.modified = True
                 return redirect("/register")
         
         session.clear()
@@ -58,10 +61,12 @@ def register():
     if request.method == "POST":
         if request.form.get("registerPassword") != request.form.get("registerRepeatPassword"):
             return render_template("error.html", message="Пароли не совпадают")
-
-        if request.form.get("registerUsertype") not in USERTYPES:
-            return render_template("error.html", message="Некорректная роль пользователя")
-        return redirect("/users")
+        reg_role = int(request.form.get("registerUsertype"))
+        if reg_role not in USERTYPES:
+            return render_template("error.html", message="Некорректная роль пользователя")  
+              
+        return redirect("/users")    
+    
     return render_template("register.html", usertypes=USERTYPES)
 
 @app.route("/users")
