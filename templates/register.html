@@ -20,8 +20,8 @@
 
                     <select class="form-control select-input" aria-label="Выберите роль пользователя" name="registerUsertype">
                         <option disabled selected value="">Выберите роль пользователя</option>
-                        {% for usertype in usertypes %}
-                        <option value="{{ usertype }}">{{ usertype }}</option>
+                        {% for key, value in usertypes.items() %}
+                        <option value="{{ key }}">{{ value }}</option>
                         {% endfor %}
                     </select>
                     <br>
@@ -29,18 +29,19 @@
                     <!-- Password input -->
                     <div data-mdb-input-init class="form-outline mb-4">
                         <input type="password" id="registerPassword" class="form-control" name="registerPassword"/>
-                        <label class="form-label" for="registerPassword">Введите пароль</label>
+                        <label class="form-control" for="registerPassword">Введите пароль</label>
                     </div>
 
                     <!-- Repeat Password input -->
                     <div data-mdb-input-init class="form-outline mb-4">
-                        <input type="password" id="registerRepeatPassword" class="form-control" />
-                        <label class="form-label" for="registerRepeatPassword">Введите пароль повторно</label>
+                        <input type="password" id="registerRepeatPassword" class="form-control" name="registerRepeatPassword" />
+                        <label class="form-control" for="registerRepeatPassword">Введите пароль повторно</label>
                     </div>
 
                     <!-- Submit button -->
                     <button type="submit" data-mdb-button-init data-mdb-ripple-init
-                        class="btn btn-primary btn-block mb-3">Зарегистрировать пользователя</button>
+                        class="btn btn-primary btn-block mb-3">Зарегистрировать пользователя
+                    </button>
                 </form>
             </div>
         </div>
