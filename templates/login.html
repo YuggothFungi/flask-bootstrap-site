@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block body %}
-{% if not name %}
+{% if not session.get("name") %}
 <div class="container md">
     <div class="row">
         <div class="col-md-1"></div>
@@ -41,6 +41,7 @@
         <div class="col-md-1"></div>
         <div class="col-md-6">
             <div class="tab-pane fade show active" id="pills-logout" role="tabpanel" aria-labelledby="tab-logout">
+                <br>
                 <form action="/login" method="POST">
                     <!-- Submit button -->
                     <input type="hidden" name="loginAction" value="0"/>

@@ -2,7 +2,7 @@
 
 {% block body %}
 
-<p>Hello, {% if name %}{{ name }}{% else %}world{% endif %}</p>
+<p>Hello, {% if session.get("name") %}{{ session.get("name") }}{% else %}world{% endif %}</p>
 <p>Это курс 2</p>
 
 {% endblock %}
