@@ -17,11 +17,17 @@ def index():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        if not request.form.get("loginName"):
-            return render_template('error.html', message="Вы не ввели логин")
-        session["name"] = request.form.get("loginName")
-        return redirect("/course1")
-    return render_template('login.html')
+        if request.form.get("loginAction")=='1':
+            if not request.form.get("loginName"):
+                return render_template('error.html', message="Вы не ввели логин")
+            session['logged_in']=True
+            session['name'] = request.form.get("loginName")
+            return redirect("/course1")
+        
+        session['logged_in'] = False
+        session['name'] = None
+        return redirect("/")
+    return render_template('login.html', name=session.get("name"))
 
 @app.route("/course1")
 def course1():
