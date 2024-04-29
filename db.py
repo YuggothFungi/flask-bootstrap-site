@@ -9,3 +9,9 @@ def authUser(name, password):
     name = "user"
     password = "encrypted password"
     return 0
+
+def registerUser(name, password, role):
+    name = "user"
+    password = "encrypted password"
+    role = "admin"
+    return True
