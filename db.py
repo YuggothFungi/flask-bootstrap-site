@@ -4,3 +4,8 @@ def getUserList():
 def checkUserRole(name):
     name = 0
     return name
+
+def authUser(name, password):
+    name = "user"
+    password = "encrypted password"
+    return 0

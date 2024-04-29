@@ -1,4 +1,5 @@
-from db import getUserList, checkUserRole
+import base64
+from db import getUserList, checkUserRole, authUser
 from flask import Flask, render_template, request, redirect, session
 from flask_session import Session
 
@@ -19,19 +20,28 @@ def index():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
+        login_name = request.form.get("loginName")
+        login_pass = request.form.get("loginPassword")
+        login_pass_safe = base64.encode(login_pass.encode('utf-8'))
         if request.form.get("loginAction")=='1':
-            if not request.form.get("loginName"):
+            if not login_name:
                 return render_template('error.html', message="Вы не ввели логин")
+            
+            auth_result = authUser(login_name, login_pass_safe)
+            if auth_result not in USERTYPES.keys():
+                return render_template('error.html', message="Невозможно авторизоваться. Проверьте логин/пароль.")
+            
             session['logged_in']=True
-            session_name = session['name'] = request.form.get("loginName")
-            session_role = checkUserRole(session_name)
-            if session_role == 1:
+            session['name'] = login_name
+            session['role'] = USERTYPES[auth_result]
+            session.modified = True
+
+            if auth_result > 0:
                 return redirect("/course1")
             else:
-                session['role'] = USERTYPES[session_role]
-                session.modified = True
                 return redirect("/register")
         
+        # Если в качестве loginAction пришёл 0 (завершить работу), очищаем сессию и возвращаемся на главную
         session.clear()
         return redirect("/")
     return render_template('login.html')
