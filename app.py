@@ -22,7 +22,7 @@ def login():
     if request.method == "POST":
         login_name = request.form.get("loginName")
         login_pass = request.form.get("loginPassword")
-        login_pass_safe = base64.encode(login_pass.encode('utf-8'))
+        login_pass_safe = base64.b64encode(login_pass.encode('utf-8'))
         if request.form.get("loginAction")=='1':
             if not login_name:
                 return render_template('error.html', message="Вы не ввели логин")
