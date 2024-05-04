@@ -33,6 +33,8 @@ def login():
             else:
                 login_pass_safe = base64.b64encode(login_pass.encode('utf-8'))
 
+            # Ожидаем получить роль пользователя из базы данных.
+            # Если такого пользователя нет, не получаем роль и переходим на страницу ошибки.
             auth_result = authUser(login_name, login_pass_safe)
             if auth_result not in USERTYPES:
                 return render_template("error.html", message="Невозможно авторизоваться. Проверьте логин/пароль.")
@@ -43,7 +45,9 @@ def login():
             session["role"] = USERTYPES[auth_result]
             session.modified = True
 
-            if auth_result != 3:
+            # Получаем ключ для роли Администратор 
+            # Если пользователь с другой ролью - переходим к курсам; если администратор - к регистрации пользователя.
+            if auth_result != list(USERTYPES.keys())[list(USERTYPES.values()).index("Администратор")]:
                 return redirect("/course1")
             else:
                 return redirect("/register")
@@ -51,6 +55,7 @@ def login():
         # Если в качестве loginAction пришёл 0 (завершить работу), очищаем сессию и возвращаемся на главную
         session.clear()
         return redirect("/")
+    
     # Если страница вызывается методом GET, то просто открывается форма логина
     return render_template("login.html")
 
