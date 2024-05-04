@@ -1,6 +1,6 @@
 import base64
 # from db import getUserList, authUser, registerUser
-from db_py import createUser, checkAdmin, authUser
+from db_py import registerUser, getUserList, authUser
 from flask import Flask, render_template, request, redirect, session
 from flask_session import Session
 
@@ -44,7 +44,7 @@ def login():
             session["role"] = USERTYPES[auth_result]
             session.modified = True
 
-            if auth_result > 0:
+            if auth_result != 3:
                 return redirect("/course1")
             else:
                 return redirect("/register")
@@ -109,7 +109,7 @@ def register():
             return render_template("error.html", message="Некорректная роль пользователя.")  
     
         # Обрабатываем создание или обновление пользователя в БД
-        if not registerUser(reg_name, reg_role, reg_pass_safe):
+        if not registerUser(reg_name, reg_pass_safe, reg_role):
             return render_template("error.html", message="Не удалось зарегистировать данные пользователя.")
 
         return redirect("/users")    
@@ -119,7 +119,7 @@ def register():
 @app.route("/users")
 def users():
     users = getUserList()
-    return render_template("users.html", users=users)
+    return render_template("users.html", users=users, usertypes=USERTYPES)
 
 @app.route("/test")
 def test():

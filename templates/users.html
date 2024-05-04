@@ -13,8 +13,8 @@
         <tbody>
             {% for user in users %}
                 <tr>
-                    <td>{{ user }}</td>
-                    <td>{{ users[user] }}</td>
+                    <td>{{ user[0] }}</td>
+                    <td>{{ user[1] }}</td>                    
                 </tr>
             {% endfor %}
         </tbody>
