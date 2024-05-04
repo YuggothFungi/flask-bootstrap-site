@@ -93,6 +93,20 @@ def course5():
         # Тут должно быть описание действий на странице, после прохождения теста
         raise NotImplementedError
     return render_template("course5.html")
+
+@app.route("/course6", methods=["GET", "POST"])
+def course6():
+    if request.method == "POST":
+        # Тут должно быть описание действий на странице, после прохождения теста
+        raise NotImplementedError
+    return render_template("course6.html")
+
+@app.route("/course7", methods=["GET", "POST"])
+def course7():
+    if request.method == "POST":
+        # Тут должно быть описание действий на странице, после прохождения теста
+        raise NotImplementedError
+    return render_template("course7.html")
     
 @app.route("/register", methods=["GET", "POST"])
 def register():
