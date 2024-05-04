@@ -74,6 +74,12 @@
         </nav>
       </div>
       <div class="col-md-8">
+        <p>Вы вошли в систему как
+          {% if session.get("name") %}{{ session.get("name") }} с ролью {{ session.get("role") }}.
+          {% else %}гость. <a href="/login">Войдите</a>
+          под учетной записью, созданной администратором.
+          {% endif %}</p>
+          
         {% block body %}{% endblock %}
       </div>
     </div>
