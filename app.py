@@ -1,5 +1,6 @@
 import base64
-from db import getUserList, authUser, registerUser
+# from db import getUserList, authUser, registerUser
+from db_py import createUser, checkAdmin, authUser
 from flask import Flask, render_template, request, redirect, session
 from flask_session import Session
 
@@ -11,7 +12,7 @@ Session(app)
 # Повторяет описание таблицы из БД, в которой хранятся типы ролей пользователей на сайте
 USERTYPES = { 1: "Учащийся"
             , 2 : "Учитель"
-            , 0 : "Администратор"
+            , 3 : "Администратор"
             }
 
 @app.route("/")
