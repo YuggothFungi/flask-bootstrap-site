@@ -1,5 +1,4 @@
 import base64
-# from db import getUserList, authUser, registerUser
 from db_py import registerUser, getUserList, authUser
 from flask import Flask, render_template, request, redirect, session
 from flask_session import Session
@@ -119,7 +118,7 @@ def register():
 @app.route("/users")
 def users():
     users = getUserList()
-    return render_template("users.html", users=users, usertypes=USERTYPES)
+    return render_template("users.html", users=users)
 
 @app.route("/test")
 def test():

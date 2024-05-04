@@ -21,8 +21,8 @@ def registerUser(login, password, userTypeID):
     # Сохраняем изменения и закрываем соединение
     connection.commit()
     connection.close()
-    print(usertype[1])
-    return usertype[1]
+    print(usertype[0])
+    return usertype[0]
 
 #Проверка является ли пользователя администратором
 # def checkAdmin(login):
@@ -43,19 +43,19 @@ def registerUser(login, password, userTypeID):
 
 #Авторизация пользователя
 def authUser(login, password):
-    conn = sqlite3.connect('course.db')  # Подставьте имя вашей базы данных SQLite3
-    cursor = conn.cursor()
+    connection = sqlite3.connect('course.db')
+    cursor = connection.cursor()
 
-    cursor.execute("SELECT id, userTypeID FROM user WHERE login=? AND password=?", (login, password))
+    cursor.execute("SELECT userTypeID FROM user WHERE login=? AND password=?", (login, password))
     result = cursor.fetchone()
+    connection.commit()
+    connection.close()
 
     if result:
-        print(result)
-        return result
+        print(result[0])
+        return result[0]
     else:
         return None
-
-    conn.close()
 
 def getUserList():
     connection = sqlite3.connect('course.db')
@@ -64,5 +64,3 @@ def getUserList():
     cursor.execute("SELECT login, typeName FROM user, usertype where user.userTypeID = usertype.id and user.userTypeID <> 3")
     userlist = cursor.fetchall()
     return userlist
-
-# createUser('Niveis2', '123456', 1)
