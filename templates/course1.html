@@ -197,50 +197,55 @@
         </tr>
     </tbody>
 </table>
+<br>
 
 {% if not session.get("role") %} <p>Невозможно определить роль пользователя, обратитесь к администратору сайта.</p>
 {% elif session.get("role") == 'Учащийся' %}
+<h4>Пройдите тест для проверки знаний</h4>
 <form id="quiz" action="/course1" method="POST">
     <div>
-        <p>1. По сокращённой записи восстановите полную запись оператора присваивания. C /= a + b * 2</p>
-        <div class="btn-group">
-            <input type="radio" class="btn-check" name="q1" id="q1_1" autocomplete="off" value="1" />
-            <label class="btn" for="q1_1" data-mdb-ripple-init>C = C/a + b * 2</label>
+        <div class="quiztion">
+            <p>1. По сокращённой записи восстановите полную запись оператора присваивания. C /= a + b * 2</p>
+            <div class="btn-group col-md-12">
+                <input type="radio" class="btn-check" name="q1" id="q1_1" autocomplete="off" value="1" />
+                <label class="btn" for="q1_1" data-mdb-ripple-init>C = C/a + b * 2</label>
 
-            <input type="radio" class="btn-check" name="q1" id="q1_2" autocomplete="off" value="2" />
-            <label class="btn" for="q1_2" data-mdb-ripple-init>C = C/(a + b) * 2</label>
+                <input type="radio" class="btn-check" name="q1" id="q1_2" autocomplete="off" value="2" />
+                <label class="btn" for="q1_2" data-mdb-ripple-init>C = C/(a + b) * 2</label>
 
-            <input type="radio" class="btn-check" name="q1" id="q1_3" autocomplete="off" value="3" />
-            <label class="btn" for="q1_3" data-mdb-ripple-init>C = C/(a + b * 2)</label>
+                <input type="radio" class="btn-check" name="q1" id="q1_3" autocomplete="off" value="3" />
+                <label class="btn" for="q1_3" data-mdb-ripple-init>C = C/(a + b * 2)</label>
 
-            <input type="radio" class="btn-check" name="q1" id="q1_4" autocomplete="off" value="4" />
-            <label class="btn" for="q1_4" data-mdb-ripple-init>C/a + b = 2</label>
+                <input type="radio" class="btn-check" name="q1" id="q1_4" autocomplete="off" value="4" />
+                <label class="btn" for="q1_4" data-mdb-ripple-init>C/a + b = 2</label>
+            </div>
         </div>
-
-        <p>2. Какое значение будет присвоено переменной c в результате выполнения программы?</p>
-        <pre>
+        <div class="quiztion">
+            <p>2. Какое значение будет присвоено переменной c в результате выполнения программы?</p>
+            <pre>
             <code>
                 a = b = 5
                 a += b
                 c = 2 * a - b
             </code>
         </pre>
-        <div class="btn-group">
-            <input type="radio" class="btn-check" name="q2" id="q2_1" autocomplete="off" value="1" />
-            <label class="btn" for="q2_1" data-mdb-ripple-init>5</label>
+            <div class="btn-group col-md-12">
+                <input type="radio" class="btn-check" name="q2" id="q2_1" autocomplete="off" value="1" />
+                <label class="btn" for="q2_1" data-mdb-ripple-init>5</label>
 
-            <input type="radio" class="btn-check" name="q2" id="q2_2" autocomplete="off" value="2" />
-            <label class="btn" for="q2_2" data-mdb-ripple-init>10</label>
+                <input type="radio" class="btn-check" name="q2" id="q2_2" autocomplete="off" value="2" />
+                <label class="btn" for="q2_2" data-mdb-ripple-init>10</label>
 
-            <input type="radio" class="btn-check" name="q2" id="q2_3" autocomplete="off" value="3" />
-            <label class="btn" for="q2_3" data-mdb-ripple-init>15</label>
+                <input type="radio" class="btn-check" name="q2" id="q2_3" autocomplete="off" value="3" />
+                <label class="btn" for="q2_3" data-mdb-ripple-init>15</label>
 
-            <input type="radio" class="btn-check" name="q2" id="q2_4" autocomplete="off" value="4" />
-            <label class="btn" for="q2_4" data-mdb-ripple-init>20</label>
+                <input type="radio" class="btn-check" name="q2" id="q2_4" autocomplete="off" value="4" />
+                <label class="btn" for="q2_4" data-mdb-ripple-init>20</label>
+            </div>
         </div>
-
-        <p>3. Какое значение будет присвоено переменной c в результате выполнения программы?</p>
-        <pre>
+        <div class="quiztion">
+            <p>3. Какое значение будет присвоено переменной c в результате выполнения программы?</p>
+            <pre>
             <code>
                 a = 3
                 b = 4 
@@ -248,50 +253,53 @@
                 print(s)
             </code>
         </pre>
-        <div class="btn-group">
-            <input type="radio" class="btn-check" name="q3" id="q3_1" autocomplete="off" value="1" />
-            <label class="btn" for="q3_1" data-mdb-ripple-init>Перменная d не число</label>
+            <div class="btn-group col-md-12">
+                <input type="radio" class="btn-check" name="q3" id="q3_1" autocomplete="off" value="1" />
+                <label class="btn" for="q3_1" data-mdb-ripple-init>Перменная d не число</label>
 
-            <input type="radio" class="btn-check" name="q3" id="q3_2" autocomplete="off" value="2" />
-            <label class="btn" for="q3_2" data-mdb-ripple-init>Переменная d не определена</label>
+                <input type="radio" class="btn-check" name="q3" id="q3_2" autocomplete="off" value="2" />
+                <label class="btn" for="q3_2" data-mdb-ripple-init>Переменная d не определена</label>
 
-            <input type="radio" class="btn-check" name="q3" id="q3_3" autocomplete="off" value="3" />
-            <label class="btn" for="q3_3" data-mdb-ripple-init>Переменная s не определена</label>
+                <input type="radio" class="btn-check" name="q3" id="q3_3" autocomplete="off" value="3" />
+                <label class="btn" for="q3_3" data-mdb-ripple-init>Переменная s не определена</label>
 
-            <input type="radio" class="btn-check" name="q3" id="q3_4" autocomplete="off" value="4" />
-            <label class="btn" for="q3_4" data-mdb-ripple-init>Переменная s не число</label>
+                <input type="radio" class="btn-check" name="q3" id="q3_4" autocomplete="off" value="4" />
+                <label class="btn" for="q3_4" data-mdb-ripple-init>Переменная s не число</label>
+            </div>
         </div>
+        <div class="quiztion">
+            <p>4. В чём разница между числами 100 и 100.0 в языке Python?</p>
+            <div class="btn-group col-md-12">
+                <input type="radio" class="btn-check" name="q4" id="q4_1" autocomplete="off" value="1" />
+                <label class="btn" for="q4_1" data-mdb-ripple-init>Типы данных int и float</label>
 
-        <p>4. В чём разница между числами 100 и 100.0 в языке Python?</p>
-        <div class="btn-group">
-            <input type="radio" class="btn-check" name="q4" id="q4_1" autocomplete="off" value="1" />
-            <label class="btn" for="q4_1" data-mdb-ripple-init>Типы данных int и float</label>
+                <input type="radio" class="btn-check" name="q4" id="q4_2" autocomplete="off" value="2" />
+                <label class="btn" for="q4_2" data-mdb-ripple-init>Между числами нет разницы</label>
 
-            <input type="radio" class="btn-check" name="q4" id="q4_2" autocomplete="off" value="2" />
-            <label class="btn" for="q4_2" data-mdb-ripple-init>Между числами нет разницы</label>
+                <input type="radio" class="btn-check" name="q4" id="q4_3" autocomplete="off" value="3" />
+                <label class="btn" for="q4_3" data-mdb-ripple-init>Типы данных int и string</label>
 
-            <input type="radio" class="btn-check" name="q4" id="q4_3" autocomplete="off" value="3" />
-            <label class="btn" for="q4_3" data-mdb-ripple-init>Типы данных int и string</label>
-
-            <input type="radio" class="btn-check" name="q4" id="q4_4" autocomplete="off" value="4" />
-            <label class="btn" for="q4_4" data-mdb-ripple-init>Числа с плавающей запятой пишутся через ","</label>
+                <input type="radio" class="btn-check" name="q4" id="q4_4" autocomplete="off" value="4" />
+                <label class="btn" for="q4_4" data-mdb-ripple-init>Числа с плавающей запятой пишутся через ","</label>
+            </div>
         </div>
+        <div class="quiztion">
+            <p>5. Что входит в состав алфавита языка Python? </p>
+            <div class="btn-group col-md-12">
+                <input type="radio" class="btn-check" name="q5" id="q5_1" autocomplete="off" value="1" />
+                <label class="btn" for="q5_1" data-mdb-ripple-init>Кириллические символы</label>
 
-        <p>5. Что входит в состав алфавита языка Python? </p>
-        <div class="btn-group">
-            <input type="radio" class="btn-check" name="q5" id="q5_1" autocomplete="off" value="1" />
-            <label class="btn" for="q5_1" data-mdb-ripple-init>Кириллические символы</label>
+                <input type="radio" class="btn-check" name="q5" id="q5_2" autocomplete="off" value="2" />
+                <label class="btn" for="q5_2" data-mdb-ripple-init>Римские цифры</label>
 
-            <input type="radio" class="btn-check" name="q5" id="q5_2" autocomplete="off" value="2" />
-            <label class="btn" for="q5_2" data-mdb-ripple-init>Римские цифры</label>
+                <input type="radio" class="btn-check" name="q5" id="q5_3" autocomplete="off" value="3" />
+                <label class="btn" for="q5_3" data-mdb-ripple-init>Арабские цифры</label>
 
-            <input type="radio" class="btn-check" name="q5" id="q5_3" autocomplete="off" value="3" />
-            <label class="btn" for="q5_3" data-mdb-ripple-init>Арабские цифры</label>
-
-            <input type="radio" class="btn-check" name="q5" id="q5_4" autocomplete="off" value="4" />
-            <label class="btn" for="q5_4" data-mdb-ripple-init>Все utf символы</label>
+                <input type="radio" class="btn-check" name="q5" id="q5_4" autocomplete="off" value="4" />
+                <label class="btn" for="q5_4" data-mdb-ripple-init>Все utf символы</label>
+            </div>
         </div>
-        <input type="submit" value="Проверить ответы" id="checkAnswers" class="btn btn-primary">
+        <input type="submit" value="Проверить ответы" id="checkAnswers" class="btn btn-primary col-md-12">
     </div>
 </form>
 {% else %}
