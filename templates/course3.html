@@ -129,10 +129,162 @@
 
 {% if not session.get("role") %} <p>Невозможно определить роль пользователя, обратитесь к администратору сайта.</p>
 {% elif session.get("role") == 'Учащийся' %}
-<p>Здесь отображается только часть для учащегося</p>
+<h4>Пройдите тест для проверки знаний</h4>
+<form id="quiz" action="/course1" method="POST">
+    <div>
+        <div class="quiztion">
+            <p>1. Укажите истинное высказывание.</p>
+            <div class="btn-group col-md-12">
+                <input type="radio" class="btn-check" name="q1" id="q1_1" autocomplete="off" value="1" />
+                <label class="btn" for="q1_1" data-mdb-ripple-init>'a' &lt; 'b' or 1 &gt; 0 == True</label>
+
+                <input type="radio" class="btn-check" name="q1" id="q1_2" autocomplete="off" value="2" />
+                <label class="btn" for="q1_2" data-mdb-ripple-init>3 &gt; 2 and 5 &gt; 6 == True</label>
+
+                <input type="radio" class="btn-check" name="q1" id="q1_3" autocomplete="off" value="3" />
+                <label class="btn" for="q1_3" data-mdb-ripple-init>61 // 5 * 3 == 410 // 3 == 3</label>
+
+                <input type="radio" class="btn-check" name="q1" id="q1_4" autocomplete="off" value="4" />
+                <label class="btn" for="q1_4" data-mdb-ripple-init>2 // 3 == 1</label>
+            </div>
+        </div>
+        <div class="quiztion">
+            <p>2. Определите результат работы программы для следующих входных данных: -3 -9.</p>
+            <pre>
+            <code>
+                a, b = map(int, input ().split()) 
+                c = (a + b + abs (a - b) ) // 2 
+                print(c)
+            </code>
+        </pre>
+            <div class="btn-group col-md-12">
+                <input type="radio" class="btn-check" name="q2" id="q2_1" autocomplete="off" value="1" />
+                <label class="btn" for="q2_1" data-mdb-ripple-init>-3</label>
+
+                <input type="radio" class="btn-check" name="q2" id="q2_2" autocomplete="off" value="2" />
+                <label class="btn" for="q2_2" data-mdb-ripple-init>-9</label>
+
+                <input type="radio" class="btn-check" name="q2" id="q2_3" autocomplete="off" value="3" />
+                <label class="btn" for="q2_3" data-mdb-ripple-init>-12</label>
+
+                <input type="radio" class="btn-check" name="q2" id="q2_4" autocomplete="off" value="4" />
+                <label class="btn" for="q2_4" data-mdb-ripple-init>3</label>
+            </div>
+        </div>
+        <div class="quiztion">
+            <p>3. Даны значения целочисленных переменных: a = 10, b = 20. В каком случае значение логической переменной rez будет истинно?</p>
+            <div class="btn-group col-md-12">
+                <input type="radio" class="btn-check" name="q3" id="q3_1" autocomplete="off" value="1" />
+                <label class="btn" for="q3_1" data-mdb-ripple-init>rez = (not (a &lt; 15)) or (b &gt; 20)</label>
+
+                <input type="radio" class="btn-check" name="q3" id="q3_2" autocomplete="off" value="2" />
+                <label class="btn" for="q3_2" data-mdb-ripple-init>rez = (not (a &gt; 15)) and (b &gt; 20)</label>
+
+                <input type="radio" class="btn-check" name="q3" id="q3_3" autocomplete="off" value="3" />
+                <label class="btn" for="q3_3" data-mdb-ripple-init>rez = (a &gt; 15) or (b &gt; 20)</label>
+
+                <input type="radio" class="btn-check" name="q3" id="q3_4" autocomplete="off" value="4" />
+                <label class="btn" for="q3_4" data-mdb-ripple-init>rez = (not (a &gt; 15)) or (b &gt; 20)</label>
+            </div>
+        </div>
+        <div class="quiztion">
+            <p>4. При каких исходных данных высказывание «Этот четырёхугольник является прямоугольником» будет истинным.</p>
+            <pre>
+            <code>
+                print('Введите две стороны четырёхугольника:') 
+                a = int(input()) 
+                b = int(input())
+                print ('Введите диагонали четырёхугольника:')
+                d1 = int(input())
+                d2 = int(input())
+                ans = a != b and d1 == d2
+                print ('Этот четырехугольник является прямоугольником - ', ans)
+            </code>
+        </pre>
+            <div class="btn-group col-md-12">
+                <input type="radio" class="btn-check" name="q4" id="q4_1" autocomplete="off" value="1" />
+                <label class="btn" for="q4_1" data-mdb-ripple-init>Диагонали равны квадратному корню из суммы сторон</label>
+
+                <input type="radio" class="btn-check" name="q4" id="q4_2" autocomplete="off" value="2" />
+                <label class="btn" for="q4_2" data-mdb-ripple-init>Стороны различны, а диагонали равны</label>
+
+                <input type="radio" class="btn-check" name="q4" id="q4_3" autocomplete="off" value="3" />
+                <label class="btn" for="q4_3" data-mdb-ripple-init>Стороны равны, а диагонали различны</label>
+
+                <input type="radio" class="btn-check" name="q4" id="q4_4" autocomplete="off" value="4" />
+                <label class="btn" for="q4_4" data-mdb-ripple-init>Стороны равны диагоналям</label>
+            </div>
+        </div>
+        <div class="quiztion">
+            <p>5. Что выполняет функция randint(0, x)? </p>
+            <div class="btn-group col-md-12">
+                <input type="radio" class="btn-check" name="q5" id="q5_1" autocomplete="off" value="1" />
+                <label class="btn" for="q5_1" data-mdb-ripple-init>Получение либо 0, либо x</label>
+
+                <input type="radio" class="btn-check" name="q5" id="q5_2" autocomplete="off" value="2" />
+                <label class="btn" for="q5_2" data-mdb-ripple-init>Получение случайного числа от 0 до 1</label>
+
+                <input type="radio" class="btn-check" name="q5" id="q5_3" autocomplete="off" value="3" />
+                <label class="btn" for="q5_3" data-mdb-ripple-init>Получение случайного целого числа от 0 до x</label>
+
+                <input type="radio" class="btn-check" name="q5" id="q5_4" autocomplete="off" value="4" />
+                <label class="btn" for="q5_4" data-mdb-ripple-init>Округление x до указанного количества знаков после запятой</label>
+            </div>
+        </div>
+        <input type="submit" value="Проверить ответы" id="checkAnswers" class="btn btn-primary col-md-12">
+
+    </div>
+</form>
 {% else %}
 <h4>Пройдите тест для проверки знаний</h4>
 <p>Отображение теста пока доступно только для учащихся</p>
 {% endif %}
+<script>
+    document.getElementById('quiz').addEventListener('submit', function (event) {
+        event.preventDefault(); // Предотвращаем отправку формы
+        const q1Answer = document.querySelector('input[name="q1"]:checked');
+        const q2Answer = document.querySelector('input[name="q2"]:checked');
+        const q3Answer = document.querySelector('input[name="q3"]:checked');
+        const q4Answer = document.querySelector('input[name="q4"]:checked');
+        const q5Answer = document.querySelector('input[name="q5"]:checked');
+        // Проверяем, есть ли ответы на все вопросы
+        if (!q1Answer || !q2Answer || !q3Answer || !q4Answer || !q5Answer) {
+            alert('Вы не ответили на все вопросы');
+            return; // Прекращаем выполнение функции, если не все вопросы отвечены
+        }
 
+        // Если ответы на все вопросы даны, продолжаем с проверкой результатов
+        const answers = [
+            q1Answer.value,
+            q2Answer.value,
+            q3Answer.value,
+            q4Answer.value,
+            q5Answer.value
+        ];
+
+        // Задаем правильные ответы
+        const correctAnswers = ['1', '1', '4', '2', '3'];
+
+        // Подсчитываем количество правильных ответов
+        let score = 0;
+        for (let i = 0; i < answers.length; i++) {
+            if (answers[i] === correctAnswers[i]) {
+                score++;
+            } else {
+                // Проверяем каждый ответ и устанавливаем красный цвет для неверных ответов
+                for (let i = 0; i < answers.length; i++) {
+                    const selectedAnswer = document.querySelector(`input[name="q${i + 1}"][value="${answers[i]}"]`);
+                    if (selectedAnswer) {
+                        const labelForAnswer = document.querySelector(`label[for="${selectedAnswer.id}"]`);
+                        if (labelForAnswer && (answers[i] !== correctAnswers[i])) {
+                            labelForAnswer.classList.add('btn-red');
+                        } else {
+                            labelForAnswer.classList.add('btn-green');
+                        }
+                    }
+                }
+            }
+        }
+    })
+</script>
 {% endblock %}
