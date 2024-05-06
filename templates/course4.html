@@ -3,8 +3,18 @@
 {% block body %}
 
 <h4>Условный оператор</h4>
-<p>При записи на языке Python разветвляющихся алгоритмов используют условный оператор.</p>
-<p>Его общий вид: if &lt;условие&gt;: &lt;операторы&gt; else: &lt;операторы&gt;</p>
+<p>При записи на языке Python разветвляющихся алгоритмов используют условный оператор. Его общий вид:</p>
+<pre>
+    <code>
+        if &lt;условие&gt;: 
+            &lt;операторы&gt; 
+        else: 
+            &lt;операторы&gt;
+    </code>
+</pre>
+<p>Условие, которое нужно проверить, записывается после слова if. Если условие верно, выполняются все команды,
+    записанные после строки с оператором if (со сдвигом вправо). Если условие неверно, выполняются все команды,
+    записанные после строки с оператором else (со сдвигом вправо).</p>
 <p>В качестве условий используются логические выражения:</p>
 <ul>
     <li>простые — записанные с помощью операций отношения (, &gt;=, &lt;=, != (не равно), == (равно));</li>
@@ -27,16 +37,193 @@
                 &lt;операторы&gt; 
     </code>
 </pre>
+<p>Для записи неполных ветвлений используется неполный условный оператор if без последующего условия else.</p>
 <p>Если после else сразу следует ещё один оператор if, можно использовать так называемое «каскадное» ветвление с
     ключевыми словами elif (сокращение от else-if).</p>
-
+<p>Для выбора из нескольких вариантов используют следующую конструкцию условного оператора:</p>
+<pre>
+    <code>
+        if &lt;условие&gt;:
+            &lt;операторы&gt;  
+        elif &lt;условие&gt;: 
+            &lt;операторы&gt; 
+        else:        
+            &lt;операторы&gt; 
+    </code>
+</pre>
 
 {% if not session.get("role") %} <p>Невозможно определить роль пользователя, обратитесь к администратору сайта.</p>
 {% elif session.get("role") == 'Учащийся' %}
-<p>Здесь отображается только часть для учащегося</p>
+<h4>Пройдите тест для проверки знаний</h4>
+<form id="quiz" action="/course1" method="POST">
+    <div>
+        <div class="quiztion">
+            <p>1. Отметьте условие, записанное на языке Python неправильно.</p>
+            <div class="btn-group col-md-12">
+                <input type="radio" class="btn-check" name="q1" id="q1_1" autocomplete="off" value="1" />
+                <label class="btn" for="q1_1" data-mdb-ripple-init>x &gt; 0 or y &lt; 0</label>
+
+                <input type="radio" class="btn-check" name="q1" id="q1_2" autocomplete="off" value="2" />
+                <label class="btn" for="q1_2" data-mdb-ripple-init>-5 &lt; a &lt; 10</label>
+
+                <input type="radio" class="btn-check" name="q1" id="q1_3" autocomplete="off" value="3" />
+                <label class="btn" for="q1_3" data-mdb-ripple-init>a =! b</label>
+
+                <input type="radio" class="btn-check" name="q1" id="q1_4" autocomplete="off" value="4" />
+                <label class="btn" for="q1_4" data-mdb-ripple-init>x == 6</label>
+            </div>
+        </div>
+        <div class="quiztion">
+            <p>2. Что будет выведено в результате работы программы при следующих входных данных: 10 5 7?</p>
+            <pre>
+            <code>
+                print('Введите три числа: ')
+                a, b, c = map (float, input().split()) 
+                x = a
+                if b < x: x = b
+                if c < x: x = c
+                print('x=', x)
+            </code>
+        </pre>
+            <div class="btn-group col-md-12">
+                <input type="radio" class="btn-check" name="q2" id="q2_1" autocomplete="off" value="1" />
+                <label class="btn" for="q2_1" data-mdb-ripple-init>5</label>
+
+                <input type="radio" class="btn-check" name="q2" id="q2_2" autocomplete="off" value="2" />
+                <label class="btn" for="q2_2" data-mdb-ripple-init>5.0</label>
+
+                <input type="radio" class="btn-check" name="q2" id="q2_3" autocomplete="off" value="3" />
+                <label class="btn" for="q2_3" data-mdb-ripple-init>7.0</label>
+
+                <input type="radio" class="btn-check" name="q2" id="q2_4" autocomplete="off" value="4" />
+                <label class="btn" for="q2_4" data-mdb-ripple-init>7</label>
+            </div>
+        </div>
+        <div class="quiztion">
+            <p>3. Какая из строк программы написана без ошибок?</p>
+            <pre>
+                <code>
+                    print(Введите число a) 
+                    a = int(input()) 
+                    if a >= 0:
+                        if a = 0:
+                            a = 18
+                        else a += 1
+                    else: a -= 6
+                    print(a)
+                </code>
+            </pre>
+            <div class="btn-group col-md-12">
+                <input type="radio" class="btn-check" name="q3" id="q3_1" autocomplete="off" value="1" />
+                <label class="btn" for="q3_1" data-mdb-ripple-init>print(Введите число a)</label>
+
+                <input type="radio" class="btn-check" name="q3" id="q3_2" autocomplete="off" value="2" />
+                <label class="btn" for="q3_2" data-mdb-ripple-init>if a = 0:</label>
+
+                <input type="radio" class="btn-check" name="q3" id="q3_3" autocomplete="off" value="3" />
+                <label class="btn" for="q3_3" data-mdb-ripple-init>else a += 1</label>
+
+                <input type="radio" class="btn-check" name="q3" id="q3_4" autocomplete="off" value="4" />
+                <label class="btn" for="q3_4" data-mdb-ripple-init>else: a -= 6</label>
+            </div>
+        </div>
+        <div class="quiztion">
+            <p>4. Определите значение переменной z при следующих значениях x и y: -1, 1.</p>
+            <pre>
+            <code>
+                x, y = map(int, input().split()) 
+                z = 0 
+                if x > 0:
+                    if y > 0: 
+                        z = 1 
+                    else: 
+                        z = 2
+            </code>
+        </pre>
+            <div class="btn-group col-md-12">
+                <input type="radio" class="btn-check" name="q4" id="q4_1" autocomplete="off" value="1" />
+                <label class="btn" for="q4_1" data-mdb-ripple-init>-1</label>
+
+                <input type="radio" class="btn-check" name="q4" id="q4_2" autocomplete="off" value="2" />
+                <label class="btn" for="q4_2" data-mdb-ripple-init>0</label>
+
+                <input type="radio" class="btn-check" name="q4" id="q4_3" autocomplete="off" value="3" />
+                <label class="btn" for="q4_3" data-mdb-ripple-init>1</label>
+
+                <input type="radio" class="btn-check" name="q4" id="q4_4" autocomplete="off" value="4" />
+                <label class="btn" for="q4_4" data-mdb-ripple-init>2</label>
+            </div>
+        </div>
+        <div class="quiztion">
+            <p>5. Что такое полное ветвление? </p>
+            <div class="btn-group col-md-12">
+                <input type="radio" class="btn-check" name="q5" id="q5_1" autocomplete="off" value="1" />
+                <label class="btn" for="q5_1" data-mdb-ripple-init>Используется только условие if</label>
+
+                <input type="radio" class="btn-check" name="q5" id="q5_2" autocomplete="off" value="2" />
+                <label class="btn" for="q5_2" data-mdb-ripple-init>Используются условия elif и else</label>
+
+                <input type="radio" class="btn-check" name="q5" id="q5_3" autocomplete="off" value="3" />
+                <label class="btn" for="q5_3" data-mdb-ripple-init>Используются условия if и else</label>
+
+                <input type="radio" class="btn-check" name="q5" id="q5_4" autocomplete="off" value="4" />
+                <label class="btn" for="q5_4" data-mdb-ripple-init>Используются условия if и elif</label>
+            </div>
+        </div>
+        <input type="submit" value="Проверить ответы" id="checkAnswers" class="btn btn-primary col-md-12">
+
+    </div>
+</form>
 {% else %}
 <h4>Пройдите тест для проверки знаний</h4>
 <p>Отображение теста пока доступно только для учащихся</p>
 {% endif %}
+<script>
+    document.getElementById('quiz').addEventListener('submit', function (event) {
+        event.preventDefault(); // Предотвращаем отправку формы
+        const q1Answer = document.querySelector('input[name="q1"]:checked');
+        const q2Answer = document.querySelector('input[name="q2"]:checked');
+        const q3Answer = document.querySelector('input[name="q3"]:checked');
+        const q4Answer = document.querySelector('input[name="q4"]:checked');
+        const q5Answer = document.querySelector('input[name="q5"]:checked');
+        // Проверяем, есть ли ответы на все вопросы
+        if (!q1Answer || !q2Answer || !q3Answer || !q4Answer || !q5Answer) {
+            alert('Вы не ответили на все вопросы');
+            return; // Прекращаем выполнение функции, если не все вопросы отвечены
+        }
 
+        // Если ответы на все вопросы даны, продолжаем с проверкой результатов
+        const answers = [
+            q1Answer.value,
+            q2Answer.value,
+            q3Answer.value,
+            q4Answer.value,
+            q5Answer.value
+        ];
+
+        // Задаем правильные ответы
+        const correctAnswers = ['3', '2', '4', '2', '3'];
+
+        // Подсчитываем количество правильных ответов
+        let score = 0;
+        for (let i = 0; i < answers.length; i++) {
+            if (answers[i] === correctAnswers[i]) {
+                score++;
+            } else {
+                // Проверяем каждый ответ и устанавливаем красный цвет для неверных ответов
+                for (let i = 0; i < answers.length; i++) {
+                    const selectedAnswer = document.querySelector(`input[name="q${i + 1}"][value="${answers[i]}"]`);
+                    if (selectedAnswer) {
+                        const labelForAnswer = document.querySelector(`label[for="${selectedAnswer.id}"]`);
+                        if (labelForAnswer && (answers[i] !== correctAnswers[i])) {
+                            labelForAnswer.classList.add('btn-red');
+                        } else {
+                            labelForAnswer.classList.add('btn-green');
+                        }
+                    }
+                }
+            }
+        }
+    })
+</script>
 {% endblock %}
