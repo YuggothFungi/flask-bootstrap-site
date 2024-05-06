@@ -155,7 +155,7 @@
 {% if not session.get("role") %} <p>Невозможно определить роль пользователя, обратитесь к администратору сайта.</p>
 {% elif session.get("role") == 'Учащийся' %}
 <h4>Пройдите тест для проверки знаний</h4>
-<form id="quiz" action="/course1" method="POST">
+<form id="quiz" action="/course2" method="POST">
     <div>
         <div class="quiztion">
             <p>1. Какой тип имеет переменная f, если после выполнения оператора print (f) на экран было выведено число
