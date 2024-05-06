@@ -138,7 +138,3 @@ def register():
 def users():
     users = getUserList()
     return render_template("users.html", users=users)
-
-@app.route("/test")
-def test():
-    return render_template("test.html")
