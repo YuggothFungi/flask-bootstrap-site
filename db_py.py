@@ -44,6 +44,9 @@ def getUserList():
     connection = sqlite3.connect('course.db')
     cursor = connection.cursor()
 
+
+
     cursor.execute("SELECT login, typeName FROM user, usertype where user.userTypeID = usertype.id and user.userTypeID <> 3")
     userlist = cursor.fetchall()
     return userlist
+
