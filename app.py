@@ -28,17 +28,19 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+# Общая функция для обработки маршрутов курсов
 def handle_course(course_number):
-    """Общая функция для обработки всех курсов"""
     if request.method == "POST":
         # Тут должно быть описание действий на странице, после прохождения теста
         raise NotImplementedError
     return render_template(f"course{course_number}.html")
 
+# Маршрут для главной страницы
 @app.route("/")
 def index():
     return render_template("index.html")
 
+# Маршрут для авторизации
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -71,7 +73,7 @@ def login():
     
     return render_template("login.html")
 
-# Маршруты для курсов с использованием общей функции
+# Маршруты для курсов
 @app.route("/course1", methods=["GET", "POST"])
 @login_required
 def course1():
@@ -107,8 +109,7 @@ def course6():
 def course7():
     return handle_course(7)
 
-# ... аналогично для остальных курсов
-
+# Маршрут для регистрации пользователя
 @app.route("/register", methods=["GET", "POST"])
 @login_required
 def register():
@@ -145,6 +146,7 @@ def register():
     
     return render_template("register.html", usertypes=USERTYPES)
 
+# Маршрут для страницы списка пользователей
 @app.route("/users")
 @login_required
 def users():
