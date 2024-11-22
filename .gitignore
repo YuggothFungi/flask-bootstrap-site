@@ -46,7 +46,6 @@ Thumbs.db
 *.log
 
 # Database
-*.db
 *.sqlite
 *.sqlite3
 
