@@ -24,21 +24,20 @@ def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not session.get("logged_in"):
-            return render_template("error.html", message=LOGIN_REQUIRED_MESSAGE)
+            return render_template("base/error.html", message=LOGIN_REQUIRED_MESSAGE)
         return f(*args, **kwargs)
     return decorated_function
 
 # Общая функция для обработки маршрутов курсов
 def handle_course(course_number):
     if request.method == "POST":
-        # Тут должно быть описание действий на странице, после прохождения теста
         raise NotImplementedError
-    return render_template(f"course{course_number}.html")
+    return render_template(f"courses/course{course_number}.html")
 
 # Маршрут для главной страницы
 @app.route("/")
 def index():
-    return render_template("index.html")
+    return render_template("base/index.html")
 
 # Маршрут для авторизации
 @app.route("/login", methods=["GET", "POST"])
@@ -54,14 +53,14 @@ def login():
             
         if login_action == '1':
             if not login_name or not login_pass:
-                return render_template("error.html", 
+                return render_template("base/error.html", 
                     message="Необходимо ввести логин и пароль.")
 
             login_pass_safe = base64.b64encode(login_pass.encode('utf-8'))
             auth_result = authUser(login_name, login_pass_safe)
             
             if auth_result not in USERTYPES:
-                return render_template("error.html", 
+                return render_template("base/error.html", 
                     message="Невозможно авторизоваться. Проверьте логин/пароль.")
             
             session["logged_in"] = True
@@ -71,7 +70,7 @@ def login():
 
             return redirect(url_for('register' if auth_result == ADMIN_ROLE else 'course1'))
     
-    return render_template("login.html")
+    return render_template("auth/login.html")
 
 # Маршруты для курсов
 @app.route("/course1", methods=["GET", "POST"])
@@ -121,11 +120,11 @@ def register():
 
         # Валидация данных
         if not all([reg_name, reg_role, reg_pass, reg_pass_confirm]):
-            return render_template("error.html", 
+            return render_template("base/error.html", 
                 message="Все поля должны быть заполнены.")
 
         if reg_pass != reg_pass_confirm:
-            return render_template("error.html", 
+            return render_template("base/error.html", 
                 message="Пароли не совпадают.")
 
         try:
@@ -133,22 +132,22 @@ def register():
             if reg_role not in USERTYPES:
                 raise ValueError
         except ValueError:
-            return render_template("error.html", 
+            return render_template("base/error.html", 
                 message="Некорректная роль пользователя.")
 
         reg_pass_safe = base64.b64encode(reg_pass.encode('utf-8'))
         
         if not registerUser(reg_name, reg_pass_safe, reg_role):
-            return render_template("error.html", 
+            return render_template("base/error.html", 
                 message="Не удалось зарегистировать данные пользователя.")
 
         return redirect(url_for('users'))    
     
-    return render_template("register.html", usertypes=USERTYPES)
+    return render_template("admin/register.html", usertypes=USERTYPES)
 
 # Маршрут для страницы списка пользователей
 @app.route("/users")
 @login_required
 def users():
     users = getUserList()
-    return render_template("users.html", users=users)
+    return render_template("admin/users.html", users=users)
