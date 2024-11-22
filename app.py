@@ -5,8 +5,11 @@ from flask import Flask, render_template, request, redirect, session, url_for
 from flask_session import Session
 
 app = Flask(__name__)
-app.config["SESSION_PERMANENT"] = False
+
+# Конфигурация сессий
 app.config["SESSION_TYPE"] = "filesystem"
+app.config["SESSION_PERMANENT"] = False
+app.config["SECRET_KEY"] = "your_secret_key_here"
 Session(app)
 
 # Константы
@@ -16,6 +19,7 @@ USERTYPES = {
     3: "Администратор"
 }
 
+TEACHER_ROLE = 2
 ADMIN_ROLE = 3
 LOGIN_REQUIRED_MESSAGE = "Необходима авторизация для доступа к этой странице."
 
@@ -25,6 +29,15 @@ def login_required(f):
     def decorated_function(*args, **kwargs):
         if not session.get("logged_in"):
             return render_template("base/error.html", message=LOGIN_REQUIRED_MESSAGE)
+        return f(*args, **kwargs)
+    return decorated_function
+
+def teacher_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if not session.get("logged_in") or session.get("role") != "Учитель":
+            return render_template("base/error.html", 
+                message="Эта страница доступна только для учителей.")
         return f(*args, **kwargs)
     return decorated_function
 
@@ -68,7 +81,13 @@ def login():
             session["role"] = USERTYPES[auth_result]
             session.modified = True
 
-            return redirect(url_for('register' if auth_result == ADMIN_ROLE else 'course1'))
+            # Перенаправление в зависимости от роли
+            if auth_result == ADMIN_ROLE:  # Администратор
+                return redirect(url_for('register'))
+            elif auth_result == TEACHER_ROLE:  # Учитель
+                return redirect(url_for('teacher_class'))
+            else:  # Учащийся
+                return redirect(url_for('course1'))
     
     return render_template("auth/login.html")
 
@@ -151,3 +170,8 @@ def register():
 def users():
     users = getUserList()
     return render_template("admin/users.html", users=users)
+
+@app.route("/class")
+@teacher_required
+def teacher_class():
+    return render_template("teacher/class.html")

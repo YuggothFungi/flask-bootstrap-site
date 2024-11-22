@@ -26,7 +26,7 @@
                   Начало
                 </a>
               </li>
-              {% if session.get("role") %}
+              {% if not session.get("role") == 'Администратор' %}
               <li class="nav-item">
                 <a class="nav-link" href="/course1">
                   Общие сведения о языке
@@ -60,6 +60,13 @@
               <li class="nav-item">
                 <a class="nav-link" href="/course7">
                   Запись вспомогательных алгоритмов
+                </a>
+              </li>
+              {% endif %}
+              {% if session.get("role") == 'Учитель' %}
+              <li class="nav-item">
+                <a class="nav-link" href="/class">
+                  Мой класс
                 </a>
               </li>
               {% endif %}
