@@ -82,15 +82,17 @@ def getStudentResults(teacherId):
         }
     ]
 
-def postTestResults(answers):
+def postTestResults(answers, timestamp):
     """
     Заглушка для сохранения результатов теста
     Args:
         answers: словарь с ответами ученика в формате {номер_вопроса: номер_ответа}
+        timestamp: время сдачи теста в тиках (миллисекунды с начала эпохи)
     Returns:
         None
     """
     # TODO: Реализовать сохранение результатов в базу данных
     print(f"Результаты теста: {answers}")
+    print(f"Время сдачи (тики): {timestamp}")
     return None
 

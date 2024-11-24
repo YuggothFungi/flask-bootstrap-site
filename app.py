@@ -1,6 +1,6 @@
 import base64
 from functools import wraps
-from db_py import registerUser, getUserList, authUser, getStudentResults
+from db_py import registerUser, getUserList, authUser, getStudentResults, postTestResults
 from flask import Flask, render_template, request, redirect, session, url_for, jsonify
 from flask_session import Session
 from utils import generate_test_html, load_course_test
@@ -196,3 +196,16 @@ def teacher_class():
     teacher_id = session.get("user_id")
     students = getStudentResults(teacher_id)
     return render_template("teacher/class.html", students=students)
+
+@app.route("/submit_test", methods=['POST'])
+@login_required
+def submit_test():
+    data = request.get_json()
+    course_id = data.get('course_id')
+    answers = data.get('answers')
+    timestamp = data.get('timestamp')  # Получаем время из запроса
+    
+    # Сохраняем результаты в БД через заглушку
+    postTestResults(answers, timestamp)
+    
+    return jsonify({'status': 'success'})

@@ -204,24 +204,24 @@ def test_submit_test_answers(client):
         '5': '2'   # Ответ на пятый вопрос
     }
     
-    response = client.post('/course1', 
-        json=test_answers,
+    test_timestamp = 1234567890  # Фиксированное время для теста
+    
+    response = client.post('/submit_test', 
+        json={
+            'course_id': 1,
+            'answers': test_answers,
+            'timestamp': test_timestamp
+        },
         content_type='application/json')
     
     # Проверяем ответ сервера
     assert response.status_code == 200
     data = response.get_json()
-    assert 'results' in data
-    assert isinstance(data['results'], dict)
-    
-    # Проверяем структуру результатов
-    for question_id in test_answers.keys():
-        assert question_id in data['results']
-        assert isinstance(data['results'][question_id], bool)
+    assert data['status'] == 'success'
 
     # Проверяем, что результаты были переданы в БД
     from db_py import postTestResults
-    test_results = postTestResults(test_answers)
+    test_results = postTestResults(test_answers, test_timestamp)
     assert test_results is None  # Заглушка пока просто возвращает None
 
 if __name__ == '__main__':

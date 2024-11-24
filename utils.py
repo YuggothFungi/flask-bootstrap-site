@@ -61,6 +61,26 @@ def generate_test_html(course_number):
 </form>
 
 <script>
+    // Функция для отправки результатов в БД
+    async function postTestResults(answers) {
+        try {
+            const response = await fetch('/submit_test', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    course_id: COURSE_NUMBER,
+                    answers: answers,
+                    timestamp: Date.now()
+                })
+            });
+            return await response.json();
+        } catch (error) {
+            console.error('Ошибка при сохранении результатов:', error);
+        }
+    }
+
     document.getElementById('quiz').addEventListener('submit', function (event) {
         event.preventDefault();
         const answers = {};
@@ -91,16 +111,14 @@ def generate_test_html(course_number):
             body: JSON.stringify(answers)
         })
         .then(response => response.json())
-        .then(data => {
-            // Подсвечиваем правильные/неправильные ответы
-            Object.entries(data.results).forEach(([questionId, isCorrect]) => {
-                const label = document.querySelector(`label[for="q${questionId}_${answers[questionId]}"]`);
-                if (label) {
-                    label.classList.add(isCorrect ? 'btn-green' : 'btn-red');
-                }
-            });
+        .then(async data => {
             // Сохраняем результаты в базу
-            postTestResults(answers);
+            await postTestResults(answers);
+            // Показываем сообщение об успешной отправке
+            alert('Тест успешно сдан');
+            // Отключаем форму
+            document.getElementById('quiz').style.pointerEvents = 'none';
+            document.getElementById('quiz').style.opacity = '0.7';
         });
     });
 </script>
