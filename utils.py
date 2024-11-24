@@ -55,7 +55,7 @@ def generate_test_html(course_number):
         '''
     
     html += '''
-        <input type="submit" value="Проверить ответы" 
+        <input type="submit" value="Сдать тест" 
                id="checkAnswers" class="btn btn-primary col-md-12">
     </div>
 </form>
@@ -99,6 +99,8 @@ def generate_test_html(course_number):
                     label.classList.add(isCorrect ? 'btn-green' : 'btn-red');
                 }
             });
+            // Сохраняем результаты в базу
+            postTestResults(answers);
         });
     });
 </script>

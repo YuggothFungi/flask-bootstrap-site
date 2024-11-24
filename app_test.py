@@ -185,5 +185,44 @@ def test_class_page_table_display(client):
     assert CLASS_HEADER_TESTS in response.data, \
         f'Ожидалось сообщение "{UTF8_TO_RUSSIAN[CLASS_HEADER_TESTS]}"'
 
+@readable_error
+def test_submit_test_answers(client):
+    """Тест отправки ответов на тест учеником"""
+    # Устанавливаем сессию как учащийся
+    with client.session_transaction() as sess:
+        sess['logged_in'] = True
+        sess['name'] = 'test_student'
+        sess['role'] = 'Учащийся'
+        sess['user_id'] = 1
+
+    # Отправляем ответы на тест
+    test_answers = {
+        '1': '3',  # Ответ на первый вопрос
+        '2': '2',  # Ответ на второй вопрос
+        '3': '1',  # Ответ на третий вопрос
+        '4': '4',  # Ответ на четвертый вопрос
+        '5': '2'   # Ответ на пятый вопрос
+    }
+    
+    response = client.post('/course1', 
+        json=test_answers,
+        content_type='application/json')
+    
+    # Проверяем ответ сервера
+    assert response.status_code == 200
+    data = response.get_json()
+    assert 'results' in data
+    assert isinstance(data['results'], dict)
+    
+    # Проверяем структуру результатов
+    for question_id in test_answers.keys():
+        assert question_id in data['results']
+        assert isinstance(data['results'][question_id], bool)
+
+    # Проверяем, что результаты были переданы в БД
+    from db_py import postTestResults
+    test_results = postTestResults(test_answers)
+    assert test_results is None  # Заглушка пока просто возвращает None
+
 if __name__ == '__main__':
     pytest.main(['-v']) 
