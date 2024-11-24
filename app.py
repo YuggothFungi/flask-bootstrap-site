@@ -1,6 +1,6 @@
 import base64
 from functools import wraps
-from db_py import registerUser, getUserList, authUser
+from db_py import registerUser, getUserList, authUser, getStudentResults
 from flask import Flask, render_template, request, redirect, session, url_for
 from flask_session import Session
 
@@ -174,4 +174,6 @@ def users():
 @app.route("/class")
 @teacher_required
 def teacher_class():
-    return render_template("teacher/class.html")
+    teacher_id = session.get("user_id")
+    students = getStudentResults(teacher_id)
+    return render_template("teacher/class.html", students=students)

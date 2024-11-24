@@ -50,3 +50,35 @@ def getUserList():
     userlist = cursor.fetchall()
     return userlist
 
+def getStudentResults(teacherId):
+    """
+    Получает список учеников и их результаты тестов для конкретного учителя
+    Args:
+        teacherId: ID учителя
+    Returns:
+        list: Список учеников в формате [{'id': id, 'name': name, 'tests': [{'course_id': id, 'score': score}, ...]}]
+    """
+    # Заглушка с тестовыми данными
+    return [
+        {
+            'id': 1,
+            'name': 'Иванов Иван',
+            'tests': [
+                {'course_id': 1, 'score': 5},
+                {'course_id': 2, 'score': 4}
+            ]
+        },
+        {
+            'id': 2,
+            'name': 'Петров Петр',
+            'tests': [
+                {'course_id': 1, 'score': 3}
+            ]
+        },
+        {
+            'id': 3,
+            'name': 'Сидоров Сидор',
+            'tests': []
+        }
+    ]
+
