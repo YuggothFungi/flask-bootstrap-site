@@ -62,7 +62,7 @@ def generate_test_html(course_number):
 
 <script>
     // Функция для отправки результатов в БД
-    async function postTestResults(answers) {
+    async function postTestResults(answers, timestamp, student_id) {
         try {
             const response = await fetch('/submit_test', {
                 method: 'POST',
@@ -72,7 +72,8 @@ def generate_test_html(course_number):
                 body: JSON.stringify({
                     course_id: COURSE_NUMBER,
                     answers: answers,
-                    timestamp: Date.now()
+                    timestamp: timestamp,
+                    student_id: student_id
                 })
             });
             return await response.json();
@@ -112,8 +113,9 @@ def generate_test_html(course_number):
         })
         .then(response => response.json())
         .then(async data => {
-            // Сохраняем результаты в базу
-            await postTestResults(answers);
+            const timestamp = Date.now();
+            // Сохраняем результаты в базу с передачей всех необходимых аргументов
+            await postTestResults(answers, timestamp, USER_ID);
             // Показываем сообщение об успешной отправке
             alert('Тест успешно сдан');
             // Отключаем форму

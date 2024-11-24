@@ -3,7 +3,7 @@ import sqlite3
 # Создание или изменение пользователя.
 # Если такой логин есть в базе, изменяем для него переданные пароль и роль пользователя,
 # Если логина нет - создаем нового пользователя.
-def registerUser(login, password, userTypeID):
+def register_user(login, password, user_type_id):
     connection = sqlite3.connect('course.db')
     cursor = connection.cursor()
     
@@ -12,11 +12,11 @@ def registerUser(login, password, userTypeID):
     
     if user:
         # Обновляем данные указанного пользователя
-        cursor.execute('UPDATE user SET userTypeID = ?, password = ? WHERE login = ?', (userTypeID, password, login))
+        cursor.execute('UPDATE user SET userTypeID = ?, password = ? WHERE login = ?', (user_type_id, password, login))
         
     else:
         # Добавляем нового пользователя
-        cursor.execute('INSERT INTO user (login, password, userTypeID) VALUES (?, ?, ?)', (login, password, userTypeID))
+        cursor.execute('INSERT INTO user (login, password, userTypeID) VALUES (?, ?, ?)', (login, password, user_type_id))
 
     cursor.execute("SELECT userTypeID FROM user WHERE login = ?", [login])
     usertype = cursor.fetchone()
@@ -26,7 +26,7 @@ def registerUser(login, password, userTypeID):
     return usertype[0]
 
 #Авторизация пользователя
-def authUser(login, password):
+def auth_user(login, password):
     connection = sqlite3.connect('course.db')
     cursor = connection.cursor()
 
@@ -40,7 +40,7 @@ def authUser(login, password):
     else:
         return None
 
-def getUserList():
+def get_user_list():
     connection = sqlite3.connect('course.db')
     cursor = connection.cursor()
 
@@ -50,7 +50,7 @@ def getUserList():
     userlist = cursor.fetchall()
     return userlist
 
-def getStudentResults(teacherId):
+def get_student_results(teacher_id):
     """
     Получает список учеников и их результаты тестов для конкретного учителя
     Args:
@@ -82,17 +82,19 @@ def getStudentResults(teacherId):
         }
     ]
 
-def postTestResults(answers, timestamp):
+def post_test_results(answers, timestamp, student_id):
     """
     Заглушка для сохранения результатов теста
     Args:
         answers: словарь с ответами ученика в формате {номер_вопроса: номер_ответа}
         timestamp: время сдачи теста в тиках (миллисекунды с начала эпохи)
+        student_id: идентификатор студента
     Returns:
         None
     """
     # TODO: Реализовать сохранение результатов в базу данных
     print(f"Результаты теста: {answers}")
     print(f"Время сдачи (тики): {timestamp}")
+    print(f"ID студента: {student_id}")
     return None
 

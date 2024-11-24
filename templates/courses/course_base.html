@@ -13,5 +13,6 @@
 
 <script>
     window.COURSE_NUMBER = {{ course_number }};
+    window.USER_ID = {{ session.get('user_id', 'null') }};
 </script>
 {% endblock %} 

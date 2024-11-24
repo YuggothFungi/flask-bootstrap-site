@@ -1,6 +1,9 @@
 import base64
 from functools import wraps
-from db_py import registerUser, getUserList, authUser, getStudentResults, postTestResults
+from db_py import (
+    register_user, get_user_list, auth_user, 
+    get_student_results, post_test_results
+)
 from flask import Flask, render_template, request, redirect, session, url_for, jsonify
 from flask_session import Session
 from utils import generate_test_html, load_course_test
@@ -89,7 +92,7 @@ def login():
                     message="Необходимо ввести логин и пароль.")
 
             login_pass_safe = base64.b64encode(login_pass.encode('utf-8'))
-            auth_result = authUser(login_name, login_pass_safe)
+            auth_result = auth_user(login_name, login_pass_safe)
             
             if auth_result not in USERTYPES:
                 return render_template("base/error.html", 
@@ -175,7 +178,7 @@ def register():
 
         reg_pass_safe = base64.b64encode(reg_pass.encode('utf-8'))
         
-        if not registerUser(reg_name, reg_pass_safe, reg_role):
+        if not register_user(reg_name, reg_pass_safe, reg_role):
             return render_template("base/error.html", 
                 message="Не удалось зарегистировать данные пользователя.")
 
@@ -187,14 +190,14 @@ def register():
 @app.route("/users")
 @login_required
 def users():
-    users = getUserList()
+    users = get_user_list()
     return render_template("admin/users.html", users=users)
 
 @app.route("/class")
 @teacher_required
 def teacher_class():
     teacher_id = session.get("user_id")
-    students = getStudentResults(teacher_id)
+    students = get_student_results(teacher_id)
     return render_template("teacher/class.html", students=students)
 
 @app.route("/submit_test", methods=['POST'])
@@ -203,9 +206,14 @@ def submit_test():
     data = request.get_json()
     course_id = data.get('course_id')
     answers = data.get('answers')
-    timestamp = data.get('timestamp')  # Получаем время из запроса
+    timestamp = data.get('timestamp')
+    student_id = data.get('student_id')  # Получаем ID студента из запроса
+    
+    # Проверяем, что все необходимые данные получены
+    if not all([course_id, answers, timestamp, student_id]):
+        return jsonify({'status': 'error', 'message': 'Не все данные предоставлены'}), 400
     
     # Сохраняем результаты в БД через заглушку
-    postTestResults(answers, timestamp)
+    post_test_results(answers, timestamp, student_id)
     
     return jsonify({'status': 'success'})

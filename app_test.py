@@ -189,11 +189,12 @@ def test_class_page_table_display(client):
 def test_submit_test_answers(client):
     """Тест отправки ответов на тест учеником"""
     # Устанавливаем сессию как учащийся
+    test_student_id = 1  # ID тестового студента
     with client.session_transaction() as sess:
         sess['logged_in'] = True
         sess['name'] = 'test_student'
         sess['role'] = 'Учащийся'
-        sess['user_id'] = 1
+        sess['user_id'] = test_student_id  # Используем тот же ID что и для теста
 
     # Отправляем ответы на тест
     test_answers = {
@@ -210,7 +211,8 @@ def test_submit_test_answers(client):
         json={
             'course_id': 1,
             'answers': test_answers,
-            'timestamp': test_timestamp
+            'timestamp': test_timestamp,
+            'student_id': test_student_id  # ID из сессии
         },
         content_type='application/json')
     
@@ -219,9 +221,9 @@ def test_submit_test_answers(client):
     data = response.get_json()
     assert data['status'] == 'success'
 
-    # Проверяем, что результаты были переданы в БД
-    from db_py import postTestResults
-    test_results = postTestResults(test_answers, test_timestamp)
+    # Проверяем, что результаты были переданы в БД с правильным ID студента
+    from db_py import post_test_results
+    test_results = post_test_results(test_answers, test_timestamp, test_student_id)
     assert test_results is None  # Заглушка пока просто возвращает None
 
 if __name__ == '__main__':
