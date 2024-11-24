@@ -1,0 +1,18 @@
+{% extends "base/layout.html" %}
+
+{% block body %}
+{% if test_html %}
+    {% if not session.get("role") %}
+        <p>Невозможно определить роль пользователя, обратитесь к администратору сайта.</p>
+    {% elif session.get("role") == 'Учащийся' %}
+        {{ test_html|safe }}
+    {% else %}
+        <h4>Пройдите тест для проверки знаний</h4>
+        <p>Отображение теста пока доступно только для учащихся</p>
+    {% endif %}
+{% endif %}
+
+<script>
+    const COURSE_NUMBER = {{ course_number }};
+</script>
+{% endblock %} 

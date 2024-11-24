@@ -1,5 +1,4 @@
-{% extends "base/layout.html" %}
-
+{% extends "courses/course_base.html" %}
 {% block body %}
 <h4>Общие сведения о языке программирования Python</h4>
 <p>Python — язык программирования высокого уровня, предназначенный для решения самого широкого круга задач.
@@ -342,7 +341,7 @@
             if (answers[i] === correctAnswers[i]) {
                 score++;
             } else {
-                // Проверяем каждый ответ и устанавливаем красный цвет для неверных ответов
+                // Прове��яем каждый ответ и устанавливаем красный цвет для неверных ответов
                 for (let i = 0; i < answers.length; i++) {
                     const selectedAnswer = document.querySelector(`input[name="q${i + 1}"][value="${answers[i]}"]`);
                     if (selectedAnswer) {

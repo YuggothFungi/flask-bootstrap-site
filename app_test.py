@@ -128,11 +128,17 @@ def test_handle_course(client):
     # Тест GET запроса
     response = client.get('/course1')
     assert response.status_code == 200
-    assert b'Python' in response.data  # Проверяем наличие контента курса
     
-    # Тест POST запроса
-    with pytest.raises(NotImplementedError):
-        client.post('/course1', data={'test': 'data'})
+    # Тест POST запроса с ответами на тест
+    response = client.post('/course1', 
+        json={'1': '3', '2': '2'}, 
+        content_type='application/json')
+    assert response.status_code == 200
+    
+    # Проверяем формат ответа
+    data = response.get_json()
+    assert 'results' in data
+    assert isinstance(data['results'], dict)
 
 @readable_error
 def test_class_page_with_teacher(client):

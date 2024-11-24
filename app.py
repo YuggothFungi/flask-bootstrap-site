@@ -1,8 +1,10 @@
 import base64
 from functools import wraps
 from db_py import registerUser, getUserList, authUser, getStudentResults
-from flask import Flask, render_template, request, redirect, session, url_for
+from flask import Flask, render_template, request, redirect, session, url_for, jsonify
 from flask_session import Session
+from utils import generate_test_html, load_course_test
+import json
 
 app = Flask(__name__)
 
@@ -23,7 +25,7 @@ TEACHER_ROLE = 2
 ADMIN_ROLE = 3
 LOGIN_REQUIRED_MESSAGE = "Необходима авторизация для доступа к этой странице."
 
-# Декоратор для проверки авторизации
+# Декораторы для проверки авторизации
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
@@ -44,8 +46,25 @@ def teacher_required(f):
 # Общая функция для обработки маршрутов курсов
 def handle_course(course_number):
     if request.method == "POST":
-        raise NotImplementedError
-    return render_template(f"courses/course{course_number}.html")
+        # Обработка ответов на тест
+        answers = request.get_json()
+        test_data = load_course_test(course_number)
+        results = {}
+        
+        for question in test_data['questions']:
+            q_id = str(question['id'])
+            if q_id in answers:
+                results[q_id] = int(answers[q_id]) == question['correct']
+        
+        return jsonify({'results': results})
+    
+    # Генерация страницы курса
+    test_html = generate_test_html(course_number)
+    return render_template(
+        f"courses/course{course_number}.html",
+        test_html=test_html,
+        course_number=course_number
+    )
 
 # Маршрут для главной страницы
 @app.route("/")
