@@ -70,10 +70,10 @@ def generate_test_html(course_number):
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    course_id: COURSE_NUMBER,
+                    course_id: window.COURSE_NUMBER,
                     answers: answers,
                     timestamp: timestamp,
-                    student_id: student_id
+                    user_id: student_id
                 })
             });
             return await response.json();
@@ -104,7 +104,7 @@ def generate_test_html(course_number):
         }
         
         // Отправляем ответы на сервер
-        fetch('/course' + COURSE_NUMBER, {
+        fetch('/course' + window.COURSE_NUMBER, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -115,7 +115,7 @@ def generate_test_html(course_number):
         .then(async data => {
             const timestamp = Date.now();
             // Сохраняем результаты в базу с передачей всех необходимых аргументов
-            await postTestResults(answers, timestamp, USER_ID);
+            await postTestResults(answers, timestamp, window.USER_ID);
             // Показываем сообщение об успешной отправке
             alert('Тест успешно сдан');
             // Отключаем форму

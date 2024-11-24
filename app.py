@@ -57,7 +57,7 @@ def handle_course(course_number):
         for question in test_data['questions']:
             q_id = str(question['id'])
             if q_id in answers:
-                results[q_id] = int(answers[q_id]) == question['correct']
+                results[q_id] = int(answers[q_id])
         
         return jsonify({'results': results})
     
@@ -94,19 +94,22 @@ def login():
             login_pass_safe = base64.b64encode(login_pass.encode('utf-8'))
             auth_result = auth_user(login_name, login_pass_safe)
             
-            if auth_result not in USERTYPES:
+            if not auth_result or auth_result[0] not in USERTYPES:
                 return render_template("base/error.html", 
                     message="Невозможно авторизоваться. Проверьте логин/пароль.")
             
+            user_type_id, user_id = auth_result  # Распаковываем результат
+            
             session["logged_in"] = True
             session["name"] = login_name
-            session["role"] = USERTYPES[auth_result]
+            session["role"] = USERTYPES[user_type_id]
+            session["user_id"] = user_id  # Сохраняем id пользователя в сессии
             session.modified = True
 
             # Перенаправление в зависимости от роли
-            if auth_result == ADMIN_ROLE:  # Администратор
+            if user_type_id == ADMIN_ROLE:  # Администратор
                 return redirect(url_for('register'))
-            elif auth_result == TEACHER_ROLE:  # Учитель
+            elif user_type_id == TEACHER_ROLE:  # Учитель
                 return redirect(url_for('teacher_class'))
             else:  # Учащийся
                 return redirect(url_for('course1'))
@@ -207,7 +210,7 @@ def submit_test():
     course_id = data.get('course_id')
     answers = data.get('answers')
     timestamp = data.get('timestamp')
-    student_id = data.get('student_id')  # Получаем ID студента из запроса
+    student_id = data.get('user_id')
     
     # Проверяем, что все необходимые данные получены
     if not all([course_id, answers, timestamp, student_id]):

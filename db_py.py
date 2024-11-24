@@ -27,16 +27,24 @@ def register_user(login, password, user_type_id):
 
 #Авторизация пользователя
 def auth_user(login, password):
+    """
+    Авторизация пользователя
+    Args:
+        login: логин пользователя
+        password: пароль пользователя
+    Returns:
+        tuple: (user_type_id, user_id) или None если авторизация не удалась
+    """
     connection = sqlite3.connect('course.db')
     cursor = connection.cursor()
 
-    cursor.execute("SELECT userTypeID FROM user WHERE login=? AND password=?", (login, password))
+    cursor.execute("SELECT userTypeID, id FROM user WHERE login=? AND password=?", (login, password))
     result = cursor.fetchone()
     connection.commit()
     connection.close()
 
     if result:
-        return result[0]
+        return result  # Возвращаем кортеж (userTypeID, id)
     else:
         return None
 
