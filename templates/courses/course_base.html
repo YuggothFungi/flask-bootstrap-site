@@ -7,12 +7,11 @@
     {% elif session.get("role") == 'Учащийся' %}
         {{ test_html|safe }}
     {% else %}
-        <h4>Пройдите тест для проверки знаний</h4>
-        <p>Отображение теста пока доступно только для учащихся</p>
+        <p>Отображение теста доступно только для учащихся</p>
     {% endif %}
 {% endif %}
 
 <script>
-    const COURSE_NUMBER = {{ course_number }};
+    window.COURSE_NUMBER = {{ course_number }};
 </script>
 {% endblock %} 
