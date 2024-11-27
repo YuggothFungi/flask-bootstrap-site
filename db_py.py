@@ -35,18 +35,22 @@ def auth_user(login, password):
     Returns:
         tuple: (user_type_id, user_id) или None если авторизация не удалась
     """
-    connection = sqlite3.connect('course.db')
-    cursor = connection.cursor()
+    try:
+        connection = sqlite3.connect('course.db')
+        cursor = connection.cursor()
 
-    cursor.execute("SELECT userTypeID, id FROM user WHERE login=? AND password=?", (login, password))
-    result = cursor.fetchone()
-    connection.commit()
-    connection.close()
-
-    if result:
-        return result  # Возвращаем кортеж (userTypeID, id)
-    else:
+        cursor.execute("SELECT userTypeID, id FROM user WHERE login=? AND password=?", (login, password))
+        result = cursor.fetchone()
+        
+        return result if result else None
+        
+    except sqlite3.Error as e:
+        print(f"Произошла ошибка при работе с базой данных: {e}")
         return None
+        
+    finally:
+        if connection:
+            connection.close()
 
 def get_user_list():
     connection = sqlite3.connect('course.db')
