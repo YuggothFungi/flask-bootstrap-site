@@ -60,31 +60,71 @@ def get_student_results(teacher_id):
     Args:
         teacherId: ID учителя
     Returns:
-        list: Список учеников в формате [{'id': id, 'name': name, 'tests': [{'course_id': id, 'score': score}, ...]}]
+        list: Список учеников в формате [{'id': id, 'name': name, 'tests': [{'course_id': id, 'score': score, 
+        'date': timestamp, 'answer_key': answer}]}]
     """
-    # Заглушка с тестовыми данными
-    return [
-        {
-            'id': 1,
-            'name': 'Иванов Иван',
-            'tests': [
-                {'course_id': 1, 'score': 5},
-                {'course_id': 2, 'score': 4}
-            ]
-        },
-        {
-            'id': 2,
-            'name': 'Петров Петр',
-            'tests': [
-                {'course_id': 1, 'score': 3}
-            ]
-        },
-        {
-            'id': 3,
-            'name': 'Сидоров Сидор',
-            'tests': []
-        }
-    ]
+    try:
+        connection = sqlite3.connect('course.db')
+        cursor = connection.cursor()
+        
+        # Получаем список студентов (userTypeID = 3 для студентов)
+        cursor.execute("""
+            SELECT DISTINCT u.id, u.login
+            FROM user u
+            JOIN testsResults tr ON u.id = tr.idUser
+            WHERE u.userTypeID = 3
+        """)
+        students = cursor.fetchall()
+        
+        results = []
+        for student in students:
+            student_id, student_name = student
+            
+            # Получаем результаты тестов для каждого студента
+            cursor.execute("""
+                SELECT tr.idTest, tr.answerKey, tr.date, t.testKey
+                FROM testsResults tr
+                JOIN tests t ON tr.idTest = t.id
+                WHERE tr.idUser = ?
+                ORDER BY tr.date DESC
+            """, (student_id,))
+            
+            test_results = cursor.fetchall()
+            
+            # Формируем список тестов студента
+            tests = []
+            for test in test_results:
+                test_id, answer_key, date, test_key = test
+                
+                # Вычисляем оценку, сравнивая ключ ответов с правильным ключом
+                score = 5 if answer_key == test_key else (
+                    4 if abs(answer_key - test_key) == 1 else (
+                    3 if abs(answer_key - test_key) == 2 else 2))
+                
+                tests.append({
+                    'course_id': test_id,
+                    'score': score,
+                    'date': date,
+                    'answer_key': answer_key
+                })
+            
+            # Добавляем информацию о студенте в общий список
+            if tests:  # Добавляем только студентов, у которых есть результаты тестов
+                results.append({
+                    'id': student_id,
+                    'name': student_name,
+                    'tests': tests
+                })
+        
+        return results
+        
+    except sqlite3.Error as e:
+        print(f"Произошла ошибка при работе с базой данных: {e}")
+        return []
+        
+    finally:
+        if connection:
+            connection.close()
 
 def post_test_results(answers, timestamp, student_id):
     """
