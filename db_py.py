@@ -136,9 +136,33 @@ def post_test_results(answers, timestamp, student_id):
     Returns:
         None
     """
-    # TODO: Реализовать сохранение результатов в базу данных
-    print(f"Результаты теста: {answers}")
-    print(f"Время сдачи (тики): {timestamp}")
-    print(f"ID студента: {student_id}")
+    try:
+        connection = sqlite3.connect('course.db')
+        cursor = connection.cursor()
+
+        # Получаем id теста из первого вопроса (все вопросы относятся к одному тесту)
+        first_question = min(answers.keys())
+        cursor.execute("SELECT idTest FROM questionBase WHERE id = ?", (first_question,))
+        test_id = cursor.fetchone()[0]
+
+        # Формируем ключ ответов (конкатенация всех ответов в порядке возрастания номеров вопросов)
+        sorted_answers = [str(answers[q]) for q in sorted(answers.keys())]
+        answer_key = int(''.join(sorted_answers))
+
+        # Сохраняем результат теста
+        cursor.execute("""
+            INSERT INTO testsResults (idUser, idTest, answerKey, date)
+            VALUES (?, ?, ?, ?)
+        """, (student_id, test_id, answer_key, timestamp))
+
+        connection.commit()
+
+    except sqlite3.Error as e:
+        print(f"Произошла ошибка при сохранении результатов теста: {e}")
+        
+    finally:
+        if connection:
+            connection.close()
+
     return None
 
