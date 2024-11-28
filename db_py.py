@@ -27,14 +27,6 @@ def register_user(login, password, user_type_id):
 
 #Авторизация пользователя
 def auth_user(login, password):
-    """
-    Авторизация пользователя
-    Args:
-        login: логин пользователя
-        password: пароль пользователя
-    Returns:
-        tuple: (user_type_id, user_id) или None если авторизация не удалась
-    """
     try:
         connection = sqlite3.connect('course.db')
         cursor = connection.cursor()
