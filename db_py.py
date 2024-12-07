@@ -55,14 +55,6 @@ def get_user_list():
     return userlist
 
 def get_student_results(teacher_id):
-    """
-    Получает список учеников и их результаты тестов для конкретного учителя
-    Args:
-        teacherId: ID учителя
-    Returns:
-        list: Список учеников в формат�� [{'id': id, 'name': name, 'tests': [{'course_id': id, 'score': score, 
-        'date': timestamp, 'answer_key': answer}]}]
-    """
     try:
         connection = sqlite3.connect('course.db')
         cursor = connection.cursor()
@@ -127,15 +119,6 @@ def get_student_results(teacher_id):
             connection.close()
 
 def post_test_results(answers, timestamp, student_id):
-    """
-    Заглушка для сохранения результатов теста
-    Args:
-        answers: словарь с ответами ученика в формате {номер_вопроса: номер_ответа}
-        timestamp: время сдачи теста в тиках (миллисекунды с начала эпохи)
-        student_id: идентификатор студента
-    Returns:
-        None
-    """
     try:
         connection = sqlite3.connect('course.db')
         cursor = connection.cursor()
@@ -166,38 +149,47 @@ def post_test_results(answers, timestamp, student_id):
 
     return None
 
-def get_student_assignment_list():
+def setTeacher(student_teacher_pairs):
     """
-    Функция должна обращаться к таблице user и возвращать список пользователей 
-    со значением поля userTypeID = 1, сравнивать есть ли такие id пользователей
-    в таблице assignStudent (или как ты её назовёшь) и возвращать список. 
-    Returns:
-        list: Список студентов в формате [{'id': id, 'name': name}]
-    """
-    # TODO: Реализовать получение списка назначений студентов и учителей
-    return [{'id': 1, 'name': 'Студент 1'}, {'id': 2, 'name': 'Студент 2'}]
-
-def get_teacher_list():
-    """
-    Функция должна обращаться к таблице user и возвращать список пользователей 
-    со значением поля userTypeID = 2.
-    Returns:
-        list: Список учителей в формате [{'id': id, 'name': name}]
-    """
-    # TODO: Реализовать получение списка учителей из базы данных
-    return [{'id': 1, 'name': 'Учитель 1'}, {'id': 2, 'name': 'Учитель 2'}]
-
-def assign_students(student_teacher_pairs):
-    """
-    Заглушка для назначения студентов учителям
+    Присваивает учеников учителю
     Args:
-        student_teacher_pairs: Словарь с парами студент-учитель
-        Ключ - student_<id>, значение - teacher_<id>, например, 
-        {'student_1': 'teacher_1', 'student_2': 'teacher_1'} 
-        студенту 1 назначен учитель 1, студенту 2 назначен учитель 2.
+        student_teacher_pairs: словарь с парами ученик-учитель в формате {student_id: teacher_id}
     Returns:
-        None
+        int: 1 в случае успеха, 0 в случае ошибки
     """
-    # TODO: Реализовать сохранение пар в базу данных
-    print("Назначенные пары студентов и учителей:", student_teacher_pairs)
+    try:
+        connection = sqlite3.connect('course.db')
+        cursor = connection.cursor()
+
+        # Начинаем транзакцию
+        cursor.execute("BEGIN TRANSACTION")
+
+        # Удаляем старые назначения для этих студентов
+        student_ids = list(student_teacher_pairs.keys())
+        cursor.execute("DELETE FROM teacherToStudent WHERE idStudent IN ({})".format(
+            ','.join('?' * len(student_ids))), student_ids)
+
+        # Добавляем новые назначения
+        for student_id, teacher_id in student_teacher_pairs.items():
+            cursor.execute("""
+                INSERT INTO teacherToStudent (idTeacher, idStudent)
+                VALUES (?, ?)
+            """, (teacher_id, student_id))
+
+        # Подтверждаем транзакцию
+        connection.commit()
+        return 1
+
+    except sqlite3.Error as e:
+        print(f"Произошла ошибка при назначении учеников: {e}")
+        # Откатываем изменения в случае ошибки
+        if connection:
+            connection.rollback()
+        return 0
+        
+    finally:
+        if connection:
+            connection.close()
+
+
 
