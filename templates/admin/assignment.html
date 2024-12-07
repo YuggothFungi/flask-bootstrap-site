@@ -1,0 +1,66 @@
+{% extends "base/layout.html" %}
+
+{% block body %}
+<h1>Назначение ученика</h1>
+<form method="POST" action="/assignment" id="assignmentForm">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Ученик</th>
+                <th>Учитель</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+            <tr>
+                <td>{{ student.name }}</td>
+                <td>
+                    <select name="teacher_{{ student.id }}" class="form-select">
+                        {% for teacher in teachers %}
+                        <option value="{{ teacher.id }}">{{ teacher.name }}</option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <button type="button" class="btn btn-primary" onclick="submitAssignment()">Назначить учеников</button>
+</form>
+
+<script>
+function submitAssignment() {
+    const form = document.getElementById('assignmentForm');
+    const formData = new FormData(form);
+    const studentTeacherPairs = {};
+
+    // Construct the dictionary from the form data
+    for (const [key, value] of formData.entries()) {
+        if (key.startsWith('teacher_')) {
+            const studentId = key.split('_')[1];
+            studentTeacherPairs[`student_${studentId}`] = `teacher_${value}`;
+        }
+    }
+
+    // Send the dictionary to the server
+    fetch(form.action, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(studentTeacherPairs),
+    })
+    .then(response => {
+        if (response.ok) {
+            window.location.reload(); // Reload the page after successful submission
+        } else {
+            alert('Ошибка при назначении учеников.');
+        }
+    })
+    .catch(error => {
+        console.error('Ошибка:', error);
+        alert('Ошибка при отправке данных.');
+    });
+}
+</script>
+{% endblock %}

@@ -2,7 +2,8 @@ import base64
 from functools import wraps
 from db_py import (
     register_user, get_user_list, auth_user, 
-    get_student_results, post_test_results
+    get_student_results, post_test_results,
+    assign_students, get_student_assignment_list, get_teacher_list
 )
 from flask import Flask, render_template, request, redirect, session, url_for, jsonify
 from flask_session import Session
@@ -220,3 +221,18 @@ def submit_test():
     post_test_results(answers, timestamp, student_id)
     
     return jsonify({'status': 'success'})
+
+@app.route("/assignment", methods=["GET", "POST"])
+@login_required
+def assignment():
+    if session.get("role") != "Администратор":
+        return render_template("base/error.html", message="Эта страница доступна только для администраторов.")
+    
+    if request.method == "POST":
+        student_teacher_pairs = request.get_json()  # Get the JSON data
+        assign_students(student_teacher_pairs)
+        return jsonify({'status': 'success'})  # Return a success response
+    
+    students = get_student_assignment_list()
+    teachers = get_teacher_list()
+    return render_template("admin/assignment.html", students=students, teachers=teachers)
