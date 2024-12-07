@@ -193,3 +193,36 @@ def setTeacher(student_teacher_pairs):
 
 
 
+
+def getStudentName(student_id):
+    """
+    Получает имя и фамилию ученика
+    Args:
+        student_id: ID ученика
+    Returns:
+        str: Имя и фамилия ученика или None в случае ошибки
+    """
+    try:
+        connection = sqlite3.connect('course.db')
+        cursor = connection.cursor()
+
+        # Получаем логин (имя) ученика
+        cursor.execute("""
+            SELECT login 
+            FROM user 
+            WHERE id = ? AND userTypeID = 3
+        """, (student_id,))
+        
+        result = cursor.fetchone()
+        
+        if result:
+            return result[0]  # Возвращаем имя ученика
+        return None
+        
+    except sqlite3.Error as e:
+        print(f"Произошла ошибка при получении данных ученика: {e}")
+        return None
+        
+    finally:
+        if connection:
+            connection.close()
