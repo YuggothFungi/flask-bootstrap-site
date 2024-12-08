@@ -118,6 +118,8 @@ def get_student_results(teacher_id):
         if connection:
             connection.close()
 
+
+
 def post_test_results(answers, timestamp, student_id):
     try:
         connection = sqlite3.connect('course.db')
