@@ -48,8 +48,6 @@ def get_user_list():
     connection = sqlite3.connect('course.db')
     cursor = connection.cursor()
 
-
-
     cursor.execute("SELECT login, typeName FROM user, usertype where user.userTypeID = usertype.id and user.userTypeID <> 3")
     userlist = cursor.fetchall()
     return userlist
@@ -118,8 +116,6 @@ def get_student_results(teacher_id):
         if connection:
             connection.close()
 
-
-
 def post_test_results(answers, timestamp, student_id):
     try:
         connection = sqlite3.connect('course.db')
@@ -151,7 +147,7 @@ def post_test_results(answers, timestamp, student_id):
 
     return None
 
-def setTeacher(student_teacher_pairs):
+def assign_students(student_teacher_pairs):
     """
     Присваивает учеников учителю
     Args:
@@ -192,9 +188,6 @@ def setTeacher(student_teacher_pairs):
     finally:
         if connection:
             connection.close()
-
-
-
 
 def getStudentName(student_id):
     """
