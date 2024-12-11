@@ -17,7 +17,7 @@
                 <td>
                     <select name="teacher_{{ student.id }}" class="form-select">
                         {% for teacher in teachers %}
-                        <option value="{{ teacher.id }}">{{ teacher.name }}</option>
+                        <option value="{{ teacher[0] }}">{{ teacher[1] }}</option>
                         {% endfor %}
                     </select>
                 </td>
@@ -38,7 +38,7 @@ function submitAssignment() {
     for (const [key, value] of formData.entries()) {
         if (key.startsWith('teacher_')) {
             const studentId = key.split('_')[1];
-            studentTeacherPairs[`student_${studentId}`] = `teacher_${value}`;
+            studentTeacherPairs[`${studentId}`] = `${value}`;
         }
     }
 

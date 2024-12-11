@@ -52,6 +52,15 @@ def get_user_list():
     userlist = cursor.fetchall()
     return userlist
 
+def get_teacher_list():
+    connection = sqlite3.connect('course.db')
+    cursor = connection.cursor()
+
+    cursor.execute("SELECT user.id, user.login FROM user, usertype where user.userTypeID = usertype.id and user.userTypeID = 2")
+    teacherlist = cursor.fetchall()
+    print(teacherlist)
+    return teacherlist
+
 def get_student_results(teacher_id):
     try:
         connection = sqlite3.connect('course.db')
@@ -62,7 +71,7 @@ def get_student_results(teacher_id):
             SELECT DISTINCT u.id, u.login
             FROM user u
             JOIN testsResults tr ON u.id = tr.idUser
-            WHERE u.userTypeID = 3
+            WHERE u.userTypeID = 1
         """)
         students = cursor.fetchall()
         
@@ -205,7 +214,7 @@ def getStudentName(student_id):
         cursor.execute("""
             SELECT login 
             FROM user 
-            WHERE id = ? AND userTypeID = 3
+            WHERE id = ? AND userTypeID = 1
         """, (student_id,))
         
         result = cursor.fetchone()
@@ -218,6 +227,42 @@ def getStudentName(student_id):
         print(f"Произошла ошибка при получении данных ученика: {e}")
         return None
         
+    finally:
+        if connection:
+            connection.close()
+
+def get_student_assignment_list():
+    """
+    Функция возвращает список студентов, которые не назначены учителям.
+    Returns:
+        list: Список студентов в формате [{'id': id, 'name': name}]
+    """
+    try:
+        connection = sqlite3.connect('course.db')
+        cursor = connection.cursor()
+
+        # Получаем всех студентов
+        cursor.execute("SELECT id, login FROM user WHERE userTypeID = 1")
+        all_students = cursor.fetchall()
+
+        # Получаем id студентов, которые уже назначены
+        cursor.execute("SELECT idStudent FROM teacherToStudent")
+        assigned_students = {row[0] for row in cursor.fetchall()}
+
+        # Фильтруем студентов, которые не назначены
+        unassigned_students = [
+            {'id': student[0], 'name': student[1]} 
+            for student in all_students 
+            if student[0] not in assigned_students
+        ]
+        
+        print(unassigned_students)
+        return unassigned_students
+
+    except sqlite3.Error as e:
+        print(f"Произошла ошибка при получении списка студентов: {e}")
+        return []
+
     finally:
         if connection:
             connection.close()
