@@ -1,5 +1,8 @@
 {% extends "courses/course_base.html" %}
 {% block body %}
+{% if session.get("role") == "Учитель" %}
+    <a href="{{ url_for('static', filename='docs/PythonBasics.pdf') }}" class="btn btn-success" download>Посмотреть методические материалы</a>
+{% endif %}
 
 <h4>Условный оператор</h4>
 <p>При записи на языке Python разветвляющихся алгоритмов используют условный оператор. Его общий вид:</p>

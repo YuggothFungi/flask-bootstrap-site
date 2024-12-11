@@ -1,6 +1,8 @@
 {% extends "courses/course_base.html" %}
-
 {% block body %}
+{% if session.get("role") == "Учитель" %}
+    <a href="{{ url_for('static', filename='docs/PythonBasics.pdf') }}" class="btn btn-success" download>Посмотреть методические материалы</a>
+{% endif %}
 
 <p>Массив — это совокупность фиксированного количества однотипных элементов, которым присвоено общее имя. Доступ к
     отдельному элементу массива осуществляется по его номеру (индексу).</p>
