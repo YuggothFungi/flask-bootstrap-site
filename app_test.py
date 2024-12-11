@@ -188,6 +188,7 @@ def test_class_page_table_display(client):
 def test_submit_test_answers(client):
     """Тест отправки ответов на тест учеником"""
     # Устанавливаем сессию как учащийся
+    course_id = 1
     test_user_id = 1  # ID тестового студента
     with client.session_transaction() as sess:
         sess['logged_in'] = True
@@ -222,7 +223,7 @@ def test_submit_test_answers(client):
 
     # Проверяем, что результаты были переданы в БД с правильным ID студента
     from db_py import post_test_results
-    test_results = post_test_results(test_answers, test_timestamp, test_user_id)
+    test_results = post_test_results(course_id, test_answers, test_timestamp, test_user_id)
     assert test_results is None  # Заглушка пока просто возвращает None
 
 if __name__ == '__main__':

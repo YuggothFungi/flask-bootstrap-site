@@ -218,7 +218,7 @@ def submit_test():
         return jsonify({'status': 'error', 'message': 'Не все данные предоставлены'}), 400
     
     # Сохраняем результаты в БД через заглушку
-    post_test_results(answers, timestamp, student_id)
+    post_test_results(course_id, answers, timestamp, student_id)
     
     return jsonify({'status': 'success'})
 

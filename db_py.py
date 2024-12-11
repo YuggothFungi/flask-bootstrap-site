@@ -21,7 +21,7 @@ def register_user(login, password, user_type_id):
 
     cursor.execute("SELECT userTypeID FROM user WHERE login = ?", [login])
     usertype = cursor.fetchone()
-    # Сохраняем изменения и закрываем соединение
+    # Сохраняем изенения и закрываем соединение
     connection.commit()
     connection.close()
     return usertype[0]
@@ -63,24 +63,32 @@ def get_teacher_list():
     return teacherlist
 
 def get_student_results(teacher_id):
+    """
+    Получает результаты тестов для учеников, назначенных учителю.
+    Args:
+        teacher_id (int): ID учителя.
+    Returns:
+        list: Список учеников с их результатами.
+    """
     try:
         connection = sqlite3.connect('course.db')
         cursor = connection.cursor()
-        
-        # Получаем список студентов (userTypeID = 3 для студентов)
+
+        # Получаем список учеников, назначенных этому учителю
         cursor.execute("""
-            SELECT DISTINCT u.id, u.login
-            FROM user u
-            JOIN testsResults tr ON u.id = tr.idUser
-            WHERE u.userTypeID = 1
-        """)
+            SELECT student.id, student.login
+            FROM user AS student
+            JOIN teacherToStudent AS ts ON student.id = ts.idStudent
+            WHERE ts.idTeacher = ?
+        """, (teacher_id,))
         students = cursor.fetchall()
-        
+
         results = []
         for student in students:
-            student_id, student_name = student
-            
-            # Получаем результаты тестов для каждого студента
+            student_id = student[0]
+            student_name = student[1]
+
+            # Получаем результаты тестов для ученика
             cursor.execute("""
                 SELECT tr.idTest, tr.answerKey, tr.date, t.testKey
                 FROM testsResults tr
@@ -90,23 +98,32 @@ def get_student_results(teacher_id):
             """, (student_id,))
             
             test_results = cursor.fetchall()
-            
+            correct_count = 0
             # Формируем список тестов студента
             tests = []
             for test in test_results:
                 test_id, answer_key, date, test_key = test
                 
-                # Вычисляем оценку, сравнивая ключ ответов с правильным ключом
-                score = 5 if answer_key == test_key else (
-                    4 if abs(answer_key - test_key) == 1 else (
-                    3 if abs(answer_key - test_key) == 2 else 2))
+                answer_key = str(test[1])  # Convert to string if necessary
+                answer_list = list(answer_key)  # Convert answer_key to a list
+                print(answer_list)
+                test_key = str(test[3])
+                correct_list = list(test_key)
+                print(correct_list)
+                
+
+                # Compare lists element by element
+                for a, b in zip(answer_list, correct_list):
+                    if a == b:
+                        correct_count += 1
                 
                 tests.append({
                     'course_id': test_id,
-                    'score': score,
+                    'correct_count': correct_count,
                     'date': date,
                     'answer_key': answer_key
                 })
+                correct_count=0
             
             # Добавляем информацию о студенте в общий список
             if tests:  # Добавляем только студентов, у которых есть результаты тестов
@@ -117,24 +134,23 @@ def get_student_results(teacher_id):
                 })
         
         return results
-        
+
     except sqlite3.Error as e:
-        print(f"Произошла ошибка при работе с базой данных: {e}")
+        print(f"Произошла ошибка при получении результатов тестов: {e}")
         return []
-        
+
     finally:
         if connection:
             connection.close()
 
-def post_test_results(answers, timestamp, student_id):
+def post_test_results(course_id, answers, timestamp, student_id):
     try:
         connection = sqlite3.connect('course.db')
         cursor = connection.cursor()
 
         # Получаем id теста из первого вопроса (все вопросы относятся к одному тесту)
-        first_question = min(answers.keys())
-        cursor.execute("SELECT idTest FROM questionBase WHERE id = ?", (first_question,))
-        test_id = cursor.fetchone()[0]
+       
+        test_id = course_id
 
         # Формируем ключ ответов (конкатенация всех ответов в порядке возрастания номеров вопросов)
         sorted_answers = [str(answers[q]) for q in sorted(answers.keys())]

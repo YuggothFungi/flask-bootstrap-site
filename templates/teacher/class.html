@@ -12,8 +12,7 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Имя ученика</th>
-                        <th scope="col">Пройденные тесты</th>
-                        <th scope="col">Действия</th>
+                        <th scope="col">Количество правильных ответов</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -26,19 +25,13 @@
                             <ul class="list-unstyled">
                                 {% for test in student.tests %}
                                 <li>
-                                    Тест {{ test.course_id }}: {{ test.score }} баллов
+                                    Тест {{ test.course_id }}: {{ test.correct_count }} правильных ответов
                                 </li>
                                 {% endfor %}
                             </ul>
                             {% else %}
                             <span class="text-muted">Нет пройденных тестов</span>
                             {% endif %}
-                        </td>
-                        <td>
-                            <button class="btn btn-sm btn-primary" 
-                                    onclick="viewDetails('{{ student.id }}')">
-                                Подробнее
-                            </button>
                         </td>
                     </tr>
                     {% endfor %}
@@ -52,11 +45,4 @@
         </div>
     </div>
 </div>
-
-<script>
-function viewDetails(studentId) {
-    // TODO: Реализовать просмотр деталей успеваемости ученика
-    alert('Просмотр деталей ученика ' + studentId);
-}
-</script>
 {% endblock %}
