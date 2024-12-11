@@ -1,4 +1,5 @@
 import sqlite3
+import json
 
 # Создание или изменение пользователя.
 # Если такой логин есть в базе, изменяем для него переданные пароль и роль пользователя,
@@ -263,6 +264,66 @@ def get_student_assignment_list():
         print(f"Произошла ошибка при получении списка студентов: {e}")
         return []
 
+    finally:
+        if connection:
+            connection.close()
+
+def load_tests_to_db(json_file='course_tests.json'):
+    """
+    Загружает тесты из JSON файла в таблицу questionBase.
+    Args:
+        json_file (str): Путь к JSON файлу с тестами.
+    Returns:
+        None
+    """
+    try:
+        # Чтение данных из JSON файла
+        with open(json_file, 'r', encoding='utf-8') as file:
+            tests_data = json.load(file)
+
+        # Check if 'tests' key exists
+        if not tests_data:
+            print(f"Файл {json_file} пуст или имеет неверный формат.")
+            return
+
+        connection = sqlite3.connect('course.db')
+        cursor = connection.cursor()
+
+        # Вставка данных в таблицу questionBase
+        for test_id, test in tests_data.items():
+            for question in test['questions']:
+                question_id = question['id']
+                question_text = question['text']
+                answers = question['answers']
+
+                # Prepare answers based on the expected structure
+                answer1 = answers[0]['text'] if len(answers) > 0 else ""
+                answer2 = answers[1]['text'] if len(answers) > 1 else ""
+                answer3 = answers[2]['text'] if len(answers) > 2 else ""
+                answer4 = answers[3]['text'] if len(answers) > 3 else ""
+
+                # Вставляем вопрос в таблицу
+                cursor.execute("""
+                    INSERT INTO questionBase (idTest, textQuest, answer1, answer2, answer3, answer4)
+                    VALUES (?, ?, ?, ?, ?, ?)
+                """, (
+                    question_id,  # idTest from the question
+                    question_text,  # textQuest
+                    answer1,  # answer1
+                    answer2,  # answer2
+                    answer3,  # answer3
+                    answer4   # answer4
+                ))
+
+        connection.commit()
+        print("Тесты успешно загружены в базу данных.")
+
+    except sqlite3.Error as e:
+        print(f"Произошла ошибка при загрузке тестов в базу данных: {e}")
+    except FileNotFoundError:
+        print(f"Файл {json_file} не найден.")
+    except json.JSONDecodeError:
+        print("Ошибка при декодировании JSON файла.")
     finally:
         if connection:
             connection.close()

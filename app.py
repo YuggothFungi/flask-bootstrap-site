@@ -3,7 +3,7 @@ from functools import wraps
 from db_py import (
     register_user, get_user_list, auth_user, 
     get_student_results, post_test_results,
-    assign_students, get_student_assignment_list, get_teacher_list
+    assign_students, get_student_assignment_list, get_teacher_list, load_tests_to_db
 )
 from flask import Flask, render_template, request, redirect, session, url_for, jsonify
 from flask_session import Session
@@ -184,7 +184,7 @@ def register():
         
         if not register_user(reg_name, reg_pass_safe, reg_role):
             return render_template("base/error.html", 
-                message="Не удалось зарегистировать данные пользователя.")
+                message="Не удалось зарегистировать данные поль��ователя.")
 
         return redirect(url_for('users'))    
     
@@ -236,3 +236,12 @@ def assignment():
     students = get_student_assignment_list()
     teachers = get_teacher_list()
     return render_template("admin/assignment.html", students=students, teachers=teachers)
+
+@app.route("/load_tests", methods=["GET"])
+@login_required
+def load_tests():
+    if session.get("role") != "Администратор":
+        return render_template("base/error.html", message="Эта страница доступна только для администраторов.")
+    
+    load_tests_to_db()  # Call the function to load tests
+    return "Тесты успешно загружены в базу данных."
