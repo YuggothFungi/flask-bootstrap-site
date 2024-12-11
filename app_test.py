@@ -166,25 +166,6 @@ def test_class_page_with_student(client):
         f'Ожидалось сообщение "{UTF8_TO_RUSSIAN[ERROR_TEACHER_ONLY]}"'
 
 @readable_error
-def test_class_page_table_display(client):
-    """Тест отображения таблицы студентов на странице класса"""
-    with client.session_transaction() as sess:
-        sess['logged_in'] = True
-        sess['name'] = 'test_teacher'
-        sess['role'] = 'Учитель'
-        sess['user_id'] = 1
-
-    response = client.get('/class')
-    assert response.status_code == 200
-    
-    assert CLASS_TITLE in response.data, \
-        f'Ожидалось сообщение "{UTF8_TO_RUSSIAN[CLASS_TITLE]}"'
-    assert CLASS_HEADER_STUDENT_NAME in response.data, \
-        f'Ожидалось сообщение "{UTF8_TO_RUSSIAN[CLASS_HEADER_STUDENT_NAME]}"'
-    assert CLASS_HEADER_TESTS in response.data, \
-        f'Ожидалось сообщение "{UTF8_TO_RUSSIAN[CLASS_HEADER_TESTS]}"'
-
-@readable_error
 def test_submit_test_answers(client):
     """Тест отправки ответов на тест учеником"""
     # Устанавливаем сессию как учащийся

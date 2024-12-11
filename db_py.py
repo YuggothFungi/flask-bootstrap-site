@@ -59,7 +59,6 @@ def get_teacher_list():
 
     cursor.execute("SELECT user.id, user.login FROM user, usertype where user.userTypeID = usertype.id and user.userTypeID = 2")
     teacherlist = cursor.fetchall()
-    print(teacherlist)
     return teacherlist
 
 def get_student_results(teacher_id):
@@ -99,20 +98,17 @@ def get_student_results(teacher_id):
             
             test_results = cursor.fetchall()
             correct_count = 0
+
             # Формируем список тестов студента
             tests = []
             for test in test_results:
                 test_id, answer_key, date, test_key = test
                 
-                answer_key = str(test[1])  # Convert to string if necessary
-                answer_list = list(answer_key)  # Convert answer_key to a list
-                print(answer_list)
+                answer_key = str(test[1])
+                answer_list = list(answer_key)
                 test_key = str(test[3])
                 correct_list = list(test_key)
-                print(correct_list)
-                
 
-                # Compare lists element by element
                 for a, b in zip(answer_list, correct_list):
                     if a == b:
                         correct_count += 1
@@ -273,7 +269,6 @@ def get_student_assignment_list():
             if student[0] not in assigned_students
         ]
         
-        print(unassigned_students)
         return unassigned_students
 
     except sqlite3.Error as e:
